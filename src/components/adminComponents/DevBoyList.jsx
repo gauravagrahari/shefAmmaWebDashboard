@@ -1,22 +1,25 @@
-import React, { useState } from "react";
-import DevBoyHeader from "../adminSubComponents/DevBoyHeader";
-import DevBoyDetails from "../adminSubComponents/DevBoyDetails";
-import axios from "axios";
+import React, { useContext, useEffect } from 'react';
+import DevBoyHeader from '../adminSubComponents/DevBoyHeader';
+import DevBoyDetails from '../adminSubComponents/DevBoyDetails';
+import axios from 'axios';
+import { DevBoyContext } from './context/DevBoyContext'; // Adjust the import path
 
 const DevBoyList = () => {
-  const [devBoys, setDevBoys] = useState([]);
+  const { devBoys, updateDevBoys } = useContext(DevBoyContext);
 
   useEffect(() => {
     const fetchDevBoys = async () => {
       try {
-        const response = await axios.get();
-        setDevBoys(response.data);
+        const response = await axios.post('/admin/getAllDevBoys');
+        updateDevBoys(response.data);
       } catch (err) {
-        console.error("error while fetching devBoy list", err);
+        console.error("Error while fetching DevBoy list", err);
       }
     };
+
     fetchDevBoys();
-  }, []);
+  }, [updateDevBoys]);
+
   return (
     <div>
       <DevBoyHeader />

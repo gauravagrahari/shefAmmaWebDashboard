@@ -10,27 +10,39 @@ import '../../index.css';
 
     const updateDevBoy = async () => {
         try {
-            const response = await axios.put(`[API_ENDPOINT]/orders/${orderData.uuidOrder}`, {
-                uuidDevBoy: selectedDevBoy
+            const updatedOrder = {
+                ...orderData, // Spread the existing order data
+                uuidDevBoy: selectedDevBoy, // Update only the uuidDevBoy field
+                timeStamp:orderData.timeStamp,
+            
+            };
+    
+            // Make the PUT request to the server
+            const response = await axios.put('/admin/updateOrder', updatedOrder, {
+                params: {
+                    attributeName: 'uuidDevBoy' // Specify the attribute name being updated
+                }
             });
+    
             console.log('Update Successful', response.data);
-            // Handle any additional actions after update
+            alert('DevBoy updated successfully!');
         } catch (error) {
-            console.error('Error updating order', error);
-            // Handle error
+            console.error('Error updating DevBoy for order', error);
+            alert('Failed to update DevBoy.');
         }
-    }
+    };
+    
     return (
         <div className="order-item">
             <div>{orderData.uuidOrder}</div>
             <div>{orderData.timeStamp}</div>
             <div>{orderData.status}</div>
             <select value={selectedDevBoy} onChange={handleDevBoyChange}>
-                <option value="">Select Dev Boy</option>
-                {devBoys.map((devBoy) => (
-                    <option key={devBoy.uuid} value={devBoy.uuid}>{devBoy.name}</option>
-                ))}
-            </select>
+        <option value="">Select Dev Boy</option>
+        {devBoys.map(devBoy => (
+          <option key={devBoy.uuidDevBoy} value={devBoy.uuidDevBoy}>{devBoy.name}</option>
+        ))}
+      </select>
             <button onClick={updateDevBoy}>Update Dev Boy</button>            
             <div>{orderData.amount}</div>
             <div>{orderData.noOfServing}</div>
