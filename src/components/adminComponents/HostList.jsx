@@ -1,26 +1,30 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import axios from "axios";
+import { HostContext } from '../context/HostContext'; // Adjust the path
 import HostsItem from "../adminSubComponents/HostsItem";
 
 function HostList() {
-  const [hosts, setHosts] = useState([]);
+  const { hosts, updateHosts } = useContext(HostContext);
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     const fetchHosts = async () => {
       try {
-        const response = await axios.post('/admin/getAllHosts');
-        setHosts(response.data);
+        const response = await axios.post(`${apiUrl}/admin/getAllHosts`);
+        updateHosts(response.data);
       } catch (err) {
         console.error("Error fetching hosts", err);
       }
     };
 
-    fetchHosts();
-  }, []);
+    if (hosts.length === 0) {
+      fetchHosts();
+    }
+  }, [hosts, updateHosts]);
 
   return (
     <div>
-      <h1>Hosts List</h1>
+  
       {hosts.map((host) => (
         <HostsItem key={host.uuidHost} hostData={host} />
       ))}

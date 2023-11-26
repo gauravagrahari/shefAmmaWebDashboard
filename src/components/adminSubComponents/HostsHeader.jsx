@@ -1,20 +1,20 @@
 import React from 'react';
-import styles from '../index'; // Adjust the path according to your project structure
+import '../../index.css'; // Adjust the path according to your project structure
 
 function HostsHeader() {
   return (
-    <div style={styles.hostsHeaderContainer}>
-      <div style={styles.headerItem}>Name</div>
-      <div style={styles.headerItem}>Phone</div>
-      <div style={styles.headerItem}>Dine Category</div>
-      <div style={styles.headerItem}>DDP</div>
-      <div style={styles.headerItem}>DP</div>
-      <div style={styles.headerItem}>Description</div>
-      <div style={styles.headerItem}>Current Message</div>
-      <div style={styles.headerItem}>Provided Meals</div>
-      <div style={styles.headerItem}>Geocode</div>
-      <div style={styles.headerItem}>Rating</div>
-      <div style={styles.headerItem}>Actions</div> {/* Placeholder for Update/View buttons */}
+    <div className="hostsHeaderContainer">
+      <div className="headerItem">Name</div>
+      <div className="headerItem">Phone</div>
+      <div className="headerItem">Dine Category</div>
+      <div className="headerItem">DDP</div>
+      <div className="headerItem">DP</div>
+      <div className="headerItem">Description</div>
+      <div className="headerItem">Current Message</div>
+      <div className="headerItem">Provided Meals</div>
+      <div className="headerItem">Geocode</div>
+      <div className="headerItem">Rating</div>
+      <div className="headerItem">Actions</div> {/* Placeholder for Update/View buttons */}
     </div>
   );
 }

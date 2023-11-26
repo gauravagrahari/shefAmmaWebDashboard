@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useHistory } from 'react-router-dom';
-import styles from '../index';
+import { useNavigate } from 'react-router-dom';
+import '../../index.css'; 
 
 const HostsItem = ({ hostData, onViewOrders }) => {
     const [editableHost, setEditableHost] = useState({
@@ -9,7 +9,8 @@ const HostsItem = ({ hostData, onViewOrders }) => {
       status: hostData.status ? 'Active' : 'Inactive' // Convert boolean to string representation
     });
     const [selectedStatus, setSelectedStatus] = useState('new');
-    const history = useHistory();
+    const navigate = useNavigate(); // use useNavigate hook
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     const handleChange = (e) => {
       setEditableHost({...editableHost, [e.target.name]: e.target.value});
@@ -25,7 +26,7 @@ const HostsItem = ({ hostData, onViewOrders }) => {
       };
   
       try {
-        const response = await axios.put('http://your-api-url/admin/updateHost', updatedHost, {
+        const response = await axios.put(`${apiUrl}/admin/updateHost`, updatedHost, {
           params: { attributeName }
         });
         console.log('Update response:', response.data);
@@ -38,11 +39,11 @@ const HostsItem = ({ hostData, onViewOrders }) => {
   
     const handleViewOrders = async () => {
       try {
-        const response = await axios.get(`http://your-api-url/admin/hostOrders`, {
+        const response = await axios.get(`${apiUrl}/admin/hostOrders`, {
           headers: { hostID: editableHost.uuidHost }
         });
         console.log('Orders:', response.data);
-        history.push('/order-list-host', { hostDetails: editableHost, orders: response.data });
+        navigate('/order-list-host', { state: { hostDetails: editableHost, orders: response.data } });
       } catch (error) {
         console.error('Error fetching orders:', error);
         alert('Failed to fetch orders.');
@@ -50,33 +51,33 @@ const HostsItem = ({ hostData, onViewOrders }) => {
     };
     const handleViewOrdersByStatus = async () => {
       try {
-          const response = await axios.get(`http://your-api-url/admin/getOrdersByStatus`, {
+          const response = await axios.get(`${apiUrl}/admin/getOrdersByStatus`, {
               headers: { id: editableHost.uuidHost },
               params: { gsiName: 'gsi1', status: selectedStatus }
           });
           console.log('Orders:', response.data);
-          history.push('/order-list-host', { hostDetails: editableHost, orders: response.data });
-      } catch (error) {
+          navigate('/order-list-host', { state: { hostDetails: editableHost, orders: response.data } });
+        } catch (error) {
           console.error('Error fetching orders:', error);
           alert('Failed to fetch orders.');
       }
   };
 
   return (
-    <div style={styles.hostItemContainer}>
+    <div className="hostItemContainer">
       <input
         type="text"
         name="nameHost"
         placeholder="Name"
         value={editableHost.nameHost}
         onChange={handleChange}
-        style={styles.inputField}
+        className="inputField"
       />
           <select
         name="status"
         value={editableHost.status}
         onChange={handleChange}
-        style={styles.dropdownField}
+        className="dropdownField"
       >
         <option value="Active">Active</option>
         <option value="Inactive">Inactive</option>
@@ -87,7 +88,7 @@ const HostsItem = ({ hostData, onViewOrders }) => {
         placeholder="Phone"
         value={editableHost.phone}
         onChange={handleChange}
-        style={styles.inputField}
+        className="inputField"
       />
       <input
         type="text"
@@ -95,7 +96,7 @@ const HostsItem = ({ hostData, onViewOrders }) => {
         placeholder="Dine Category"
         value={editableHost.dineCategory}
         onChange={handleChange}
-        style={styles.inputField}
+        className="inputField"
       />
       <input
         type="text"
@@ -103,7 +104,7 @@ const HostsItem = ({ hostData, onViewOrders }) => {
         placeholder="DDP"
         value={editableHost.DDP}
         onChange={handleChange}
-        style={styles.inputField}
+        className="inputField"
       />
       <input
         type="text"
@@ -111,14 +112,14 @@ const HostsItem = ({ hostData, onViewOrders }) => {
         placeholder="DP"
         value={editableHost.DP}
         onChange={handleChange}
-        style={styles.inputField}
+        className="inputField"
       />
       <textarea
         name="descriptionHost"
         placeholder="Description"
         value={editableHost.descriptionHost}
         onChange={handleChange}
-        style={styles.textArea}
+        className="textArea"
       />
       <input
         type="text"
@@ -126,7 +127,7 @@ const HostsItem = ({ hostData, onViewOrders }) => {
         placeholder="Current Message"
         value={editableHost.currentMessage}
         onChange={handleChange}
-        style={styles.inputField}
+        className="inputField"
       />
       <input
         type="text"
@@ -134,24 +135,24 @@ const HostsItem = ({ hostData, onViewOrders }) => {
         placeholder="Provided Meals"
         value={editableHost.providedMeals}
         onChange={handleChange}
-        style={styles.inputField}
+        className="inputField"
       />
       
-      <div style={styles.geocodeField}>
+      <div className="geocodeField">
         Geocode: {editableHost.geocode}
       </div>
-      <div style={styles.ratingField}>
+      <div className="ratingField">
         Rating: {editableHost.ratingHost}
       </div>
 
-      <button onClick={handleUpdate} style={styles.updateButton}>
+      <button onClick={handleUpdate} className="updateButton">
         Update Details
       </button>
-      <button onClick={handleViewOrders} style={styles.viewOrdersButton}>
+      <button onClick={handleViewOrders} className="viewOrdersButton">
         View Orders
       </button>
-      <div style={styles.orderStatusDropdownContainer}>
-                <select value={selectedStatus} onChange={handleStatusChange} style={styles.dropdownField}>
+      <div className="orderStatusDropdownContainer">
+                <select value={selectedStatus} onChange={handleStatusChange} className="dropdownField">
                     <option value="new">New</option>
                     <option value="ip">In Progress</option>
                     <option value="pkd">Packed</option>
@@ -160,7 +161,7 @@ const HostsItem = ({ hostData, onViewOrders }) => {
                     <option value="unpkd">Unpicked</option>
                     <option value="undel">Undelivered</option>
                 </select>
-                <button onClick={handleViewOrdersByStatus} style={styles.viewOrdersButton}>
+                <button onClick={handleViewOrdersByStatus} className="viewOrdersButton">
                     Get Orders
                 </button>
             </div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
-
+import '../../index.css'; 
+import { useNavigate } from 'react-router-dom';
 
 const DevBoyDetails = ({ devBoy }) => {
     const [editableDevBoy, setEditableDevBoy] = useState({
@@ -8,7 +9,8 @@ const DevBoyDetails = ({ devBoy }) => {
       status: devBoy.status ? 'Active' : 'Inactive' // Convert boolean to string representation
     });
     const [selectedStatus, setSelectedStatus] = useState('new');
-    const history = useHistory();
+    const navigate = useNavigate(); // use useNavigate hook
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     const handleChange = (e) => {
         setEditableDevBoy({ ...editableDevBoy, [e.target.name]: e.target.value });
@@ -20,7 +22,7 @@ const DevBoyDetails = ({ devBoy }) => {
 
     const handleUpdate = async () => {
         try {
-            const response = await axios.put(`http://your-api-url/admin/updateDevBoy`, editableDevBoy, {
+            const response = await axios.put(`${apiUrl}/admin/updateDevBoy`, editableDevBoy, {
                 params: { attributeName: 'status' }
             });
             console.log('Update Successful', response.data);
@@ -36,7 +38,7 @@ const DevBoyDetails = ({ devBoy }) => {
             const response = await axios.get(`http://your-api-url/admin/devOrders`, {
                 headers: { id: editableDevBoy.uuidDevBoy }
             });
-            history.push('/order-list-devboy', { devBoyDetails: editableDevBoy, orders: response.data });
+            navigate('/order-list-devBoy', { devBoyDetails: editableDevBoy, orders: response.data });
         } catch (error) {
             console.error('Error fetching orders:', error);
             alert('Failed to fetch orders.');
@@ -49,7 +51,7 @@ const DevBoyDetails = ({ devBoy }) => {
                 headers: { id: editableDevBoy.uuidDevBoy },
                 params: { gsiName: 'gsi2', status: selectedStatus }
             });
-            history.push('/order-list-devboy', { devBoyDetails: editableDevBoy, orders: response.data });
+            navigate('/order-list-devboy', { devBoyDetails: editableDevBoy, orders: response.data });
         } catch (error) {
             console.error('Error fetching orders:', error);
             alert('Failed to fetch orders.');

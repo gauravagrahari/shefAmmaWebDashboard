@@ -2,8 +2,8 @@ import React, { useContext } from 'react';
 import { useLocation } from 'react-router-dom';
 import OrdersHeader from '../adminSubComponents/OrdersHeader';
 import OrderItem from '../adminSubComponents/OrderItem';
-import { DevBoyContext } from './context/DevBoyContext'; // Adjust the path if needed
-import styles from '../index'; // Adjust the path according to your project structure
+import { DevBoyContext } from '../context/DevBoyContext'; // Adjust the path if needed
+import '../../index.css'; 
 
 const OrderListDevBoy = () => {
   const location = useLocation();
@@ -11,8 +11,8 @@ const OrderListDevBoy = () => {
   const { devBoys } = useContext(DevBoyContext);
 
   return (
-    <div style={styles.orderListContainer}>
-      <div style={styles.devBoyDetailsContainer}>
+    <div className="orderListContainer">
+      <div className="devBoyDetailsContainer">
         <h2>DevBoy Details</h2>
         <p>Name: {devBoyDetails.name}</p>
         <p>Geocode: {devBoyDetails.geocode}</p>
@@ -24,7 +24,7 @@ const OrderListDevBoy = () => {
 
       <OrdersHeader />
 
-      <div style={styles.ordersContainer}>
+      <div className="ordersContainer">
         {orders.map(order => (
           <OrderItem key={order.uuidOrder} order={order} devBoys={devBoys} />
         ))}

@@ -2,8 +2,8 @@ import React, { useContext } from 'react';
 import { useLocation } from 'react-router-dom';
 import OrdersHeader from '../adminSubComponents/OrdersHeader';
 import OrderItem from '../adminSubComponents/OrderItem';
-import { DevBoyContext } from './context/DevBoyContext'; // Adjust the path
-import styles from '../index';
+import { DevBoyContext } from '../context/DevBoyContext'; 
+import '../../index.css';
 
 const OrderListHost = () => {
   const location = useLocation();
@@ -11,8 +11,8 @@ const OrderListHost = () => {
   const { devBoys } = useContext(DevBoyContext);
 
   return (
-    <div style={styles.orderListHostContainer}>
-      <div style={styles.hostDetailsContainer}>
+    <div className="orderListHostContainer">
+      <div className="hostDetailsContainer">
         <h2>Host Details</h2>
         <p>Name: {hostDetails.nameHost}</p>
         <p>Phone: {hostDetails.phone}</p>
@@ -22,7 +22,7 @@ const OrderListHost = () => {
         <p>DP: {hostDetails.DP}</p>
         <p>Description: {hostDetails.descriptionHost}</p>
         <p>Current Message: {hostDetails.currentMessage}</p>
-        <p>Status: {hostDetails.status ? 'Active' : 'Inactive'}</p>
+        <p>Status: {hostDetails.status ? 'Active' : 'Inactive'}</p>-
         <p>Rating: {hostDetails.ratingHost}</p>
         <p>Number of Ratings: {hostDetails.noOfRating}</p>
         <p>Provided Meals: {hostDetails.providedMeals}</p>
@@ -31,7 +31,7 @@ const OrderListHost = () => {
 
       <OrdersHeader />
 
-      <div style={styles.ordersContainer}>
+      <div className="ordersContainer">
         {orders.map(order => (
           <OrderItem key={order.uuidOrder} order={order} devBoys={devBoys} />
         ))}

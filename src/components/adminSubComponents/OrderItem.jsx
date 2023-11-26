@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import '../../index.css';
 
+import axios from 'axios';
     const OrderItem = ({ orderData, devBoys }) => {
     const [selectedDevBoy, setSelectedDevBoy] = useState(orderData.uuidDevBoy || '');
-
+    const apiUrl = process.env.REACT_APP_API_URL;
+    
     const handleDevBoyChange = (event) => {
         setSelectedDevBoy(event.target.value);
     };
@@ -18,7 +20,7 @@ import '../../index.css';
             };
     
             // Make the PUT request to the server
-            const response = await axios.put('/admin/updateOrder', updatedOrder, {
+            const response = await axios.put(`${apiUrl}/admin/updateOrder`, updatedOrder, {
                 params: {
                     attributeName: 'uuidDevBoy' // Specify the attribute name being updated
                 }
