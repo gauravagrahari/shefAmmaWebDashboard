@@ -2,11 +2,14 @@ import React, { useContext, useEffect } from 'react';
 import DevBoyHeader from '../adminSubComponents/DevBoyHeader';
 import DevBoyDetails from '../adminSubComponents/DevBoyDetails';
 import axios from 'axios';
-import { DevBoyContext } from './context/DevBoyContext'; // Adjust the import path
+import { DevBoyContext } from '../context/DevBoyContext'; // Adjust the import path
+import config from '../context/constants';
+
+// const apiUrl = process.env.REACT_APP_API_URL;
+const apiUrl =  config.URL;
 
 const DevBoyList = () => {
   const { devBoys, updateDevBoys } = useContext(DevBoyContext);
-  const apiUrl = process.env.REACT_APP_API_URL;
   useEffect(() => {
     const fetchDevBoys = async () => {
       try {

@@ -14,7 +14,7 @@ const HomeDashboard = () => {
     };
 
     const navigateToDevBoyList = () => {
-        navigate('/devboy-list');
+        navigate('/devBoy-list');
     };
 
     const navigateToHostsList = () => {

@@ -1,16 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import '../../index.css'; 
 import { useNavigate } from 'react-router-dom';
 
+import config from '../context/constants';
+
+// const apiUrl = process.env.REACT_APP_API_URL;
+const apiUrl =  config.URL;
 const DevBoyDetails = ({ devBoy }) => {
     const [editableDevBoy, setEditableDevBoy] = useState({
       ...devBoy,
       status: devBoy.status ? 'Active' : 'Inactive' // Convert boolean to string representation
     });
     const [selectedStatus, setSelectedStatus] = useState('new');
-    const navigate = useNavigate(); // use useNavigate hook
-    const apiUrl = process.env.REACT_APP_API_URL;
+    const navigate = useNavigate(); 
 
     const handleChange = (e) => {
         setEditableDevBoy({ ...editableDevBoy, [e.target.name]: e.target.value });
@@ -58,14 +61,14 @@ const DevBoyDetails = ({ devBoy }) => {
         }
     };
     return (
-        <div style={styles.devBoyItemContainer}>
+        <div className="devBoyItemContainer">
          <input
                 type="text"
                 name="name"
                 placeholder="Name"
                 value={editableDevBoy.name}
                 onChange={handleChange}
-                style={styles.inputField}
+                className="inputField"
             />
             <input
                 type="text"
@@ -73,7 +76,7 @@ const DevBoyDetails = ({ devBoy }) => {
                 placeholder="Geocode"
                 value={editableDevBoy.geocode}
                 onChange={handleChange}
-                style={styles.inputField}
+                className="inputField"
             />
             <input
                 type="text"
@@ -81,7 +84,7 @@ const DevBoyDetails = ({ devBoy }) => {
                 placeholder="DP"
                 value={editableDevBoy.DP}
                 onChange={handleChange}
-                style={styles.inputField}
+                className="inputField"
             />
             <input
                 type="text"
@@ -89,26 +92,26 @@ const DevBoyDetails = ({ devBoy }) => {
                 placeholder="Vehicle Type"
                 value={editableDevBoy.vehicleType}
                 onChange={handleChange}
-                style={styles.inputField}
+                className="inputField"
             />
             <select
                 name="status"
                 value={editableDevBoy.status}
                 onChange={handleChange}
-                style={styles.dropdownField}
+                className="dropdownField"
             >
                 <option value="Active">Active</option>
                 <option value="Inactive">Inactive</option>
             </select>
 
-        <button onClick={handleUpdate} style={styles.updateButton}>
+        <button onClick={handleUpdate} className="updateButton">
             Update Details
         </button>
-        <button onClick={handleViewOrders} style={styles.viewOrdersButton}>
+        <button onClick={handleViewOrders} className="viewOrdersButton">
             View Orders
         </button>
-        <div style={styles.orderStatusDropdownContainer}>
-            <select value={selectedStatus} onChange={handleStatusChange} style={styles.dropdownField}>
+        <div className="orderStatusDropdownContainer">
+            <select value={selectedStatus} onChange={handleStatusChange} className="dropdownField">
                 <option value="new">New</option>
                 <option value="ip">In Progress</option>
                 <option value="pkd">Packed</option>
@@ -117,7 +120,7 @@ const DevBoyDetails = ({ devBoy }) => {
                 <option value="unpkd">Unpicked</option>
                 <option value="undel">Undelivered</option>
             </select>
-            <button onClick={handleViewOrdersByStatus} style={styles.viewOrdersButton}>
+            <button onClick={handleViewOrdersByStatus} className="viewOrdersButton">
                 Get Orders
             </button>
         </div>

@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import HomeDashboard from './components/adminComponents/HomeDashboard';
 import HostList from './components/adminComponents/HostList';
+import DevBoyList from './components/adminComponents/DevBoyList';
 import OrderListHost from './components/adminComponents/OrderListHost';
 import OrderListDevBoy from './components/adminComponents/OrderListDevBoy';
 // import NotFound from './components/NotFound';
@@ -17,6 +18,7 @@ function App() {
           <Routes>
             <Route exact path="/" element={<HomeDashboard />} />
             <Route path="/hosts-list" element={<HostList />} />
+            <Route path="/devBoy-list" element={<DevBoyList />} />
             <Route path="/order-list-host" element={<OrderListHost />} />
             <Route path="/order-list" element={<OrderList />} />
             <Route path="/order-list-devBoy" element={<OrderListDevBoy />} />

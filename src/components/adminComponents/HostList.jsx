@@ -2,10 +2,12 @@ import React, { useContext, useEffect } from "react";
 import axios from "axios";
 import { HostContext } from '../context/HostContext'; // Adjust the path
 import HostsItem from "../adminSubComponents/HostsItem";
+import config from '../context/constants';
 
+// const apiUrl = process.env.REACT_APP_API_URL;
+const apiUrl =  config.URL;
 function HostList() {
   const { hosts, updateHosts } = useContext(HostContext);
-  const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     const fetchHosts = async () => {

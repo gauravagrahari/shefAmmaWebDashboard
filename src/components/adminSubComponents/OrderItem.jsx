@@ -1,13 +1,20 @@
 import React, { useState } from 'react';
 import '../../index.css';
-
 import axios from 'axios';
+import config from '../context/constants';
+
+// const apiUrl = process.env.REACT_APP_API_URL;
+const apiUrl =  config.URL;
     const OrderItem = ({ orderData, devBoys }) => {
     const [selectedDevBoy, setSelectedDevBoy] = useState(orderData.uuidDevBoy || '');
-    const apiUrl = process.env.REACT_APP_API_URL;
-    
+    const address = orderData.delAddress || {};
+    const { street, houseName, city, state, pinCode } = address;
+
     const handleDevBoyChange = (event) => {
         setSelectedDevBoy(event.target.value);
+    };
+    const formatTime = (timestamp) => {
+        return new Date(timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     };
 
     const updateDevBoy = async () => {
@@ -33,11 +40,15 @@ import axios from 'axios';
             alert('Failed to update DevBoy.');
         }
     };
-    
+    const getMealTypeName = (mealType) => {
+        const mealTypes = { b: 'Breakfast', l: 'Lunch', d: 'Dinner' };
+        return mealTypes[mealType] || 'Unknown';
+    };
+
     return (
         <div className="order-item">
-            <div>{orderData.uuidOrder}</div>
-            <div>{orderData.timeStamp}</div>
+            {/* <div>{orderData.uuidOrder}</div> */}
+            <div>{formatTime(orderData.timeStamp)}</div>
             <div>{orderData.status}</div>
             <select value={selectedDevBoy} onChange={handleDevBoyChange}>
         <option value="">Select Dev Boy</option>
@@ -49,18 +60,28 @@ import axios from 'axios';
             <div>{orderData.amount}</div>
             <div>{orderData.noOfServing}</div>
             <div>{orderData.nameGuest}</div>
-            <div>{orderData.geoGuest}</div>
+            {/* <div>{orderData.geoGuest}</div> */}
             <div>{orderData.nameHost}</div>
             <div>{orderData.phoneGuest}</div>
             <div>{orderData.phoneHost}</div>
-            <div>{orderData.geoHost}</div>
+            {/* <div>{orderData.geoHost}</div> */}
             <div>{orderData.uuidHost}</div>
-            <div>{orderData.mealType}</div>
+            <div>{getMealTypeName(orderData.mealType)}</div>
             <div>{orderData.itemName}</div>
             <div>{orderData.itemPrice}</div>
             <div>{orderData.delTimeAndDay}</div>
-            <div>{orderData.delAddress}</div>
-          
+            {/* <div>{orderData.delAddress}</div> */}
+ {orderData.delAddress ? (
+                <div>
+                    <div>Street: {street}</div>
+                    <div>House Name: {houseName}</div>
+                    <div>City: {city}</div>
+                    <div>State: {state}</div>
+                    <div>Pin Code: {pinCode}</div>
+                </div>
+            ) : (
+                <div>No address provided</div>
+            )}
         </div>
     );
 };

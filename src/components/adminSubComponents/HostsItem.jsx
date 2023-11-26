@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import '../../index.css'; 
+import config from '../context/constants';
 
+// const apiUrl = process.env.REACT_APP_API_URL;
+const apiUrl =  config.URL;
 const HostsItem = ({ hostData, onViewOrders }) => {
     const [editableHost, setEditableHost] = useState({
       ...hostData,
@@ -10,7 +13,7 @@ const HostsItem = ({ hostData, onViewOrders }) => {
     });
     const [selectedStatus, setSelectedStatus] = useState('new');
     const navigate = useNavigate(); // use useNavigate hook
-    const apiUrl = process.env.REACT_APP_API_URL;
+  
 
     const handleChange = (e) => {
       setEditableHost({...editableHost, [e.target.name]: e.target.value});
