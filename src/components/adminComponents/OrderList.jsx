@@ -20,6 +20,10 @@ const OrderList = () => {
     const { devBoys } = useContext(DevBoyContext);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [totalOrders, setTotalOrders] = useState(0);
+    const [ordersWithoutDevBoy, setOrdersWithoutDevBoy] = useState(0);
+    const [totalPrice, setTotalPrice] = useState(0);
+    const [key, setKey] = useState(0);
 
     const fetchOrdersByStatus = async () => {
         try {
@@ -36,11 +40,17 @@ const OrderList = () => {
         }
     };
 
+    const handleDevBoyAssignment = () => {
+        setOrdersWithoutDevBoy(filteredOrders.filter(order => !order.uuidDevBoy).length);
+    };
+     useEffect(() => {
+        setKey(prevKey => prevKey + 1); // Update the key on every component mount
+    }, []);
     useEffect(() => {
         if (hosts.length > 0) {
             fetchOrdersByStatus();
         }
-    }, [status, hosts]);
+    }, [status, hosts,key]);
 
     useEffect(() => {
         let updatedOrders = [...orders];
@@ -54,10 +64,16 @@ const OrderList = () => {
             : new Date(a.timeStamp) - new Date(b.timeStamp));
 
         setFilteredOrders(updatedOrders);
+        setTotalOrders(updatedOrders.length);
+        setOrdersWithoutDevBoy(updatedOrders.filter(order => !order.uuidDevBoy).length);
+        setTotalPrice(updatedOrders.reduce((sum, order) => {
+            const itemPrice = parseFloat(order.itemPrice);
+            return sum + (isNaN(itemPrice) ? 0 : itemPrice);
+        }, 0));
     }, [orders, mealTypeFilter, isDescending]);
 
     if (error) return <div>Error: {error.message}</div>;
-    if (loading) return <div>Loading...</div>;
+    // if (loading) return <div>Loading...</div>;
 
     return (
         <div>
@@ -70,10 +86,19 @@ const OrderList = () => {
                     <option value="l">Lunch</option>
                     <option value="d">Dinner</option>
                 </select>
+                <p>Total Orders: {totalOrders}</p>
+                <p>Orders without DevBoy: {ordersWithoutDevBoy}</p>
+                <p>Total Price: {totalPrice.toFixed(2)}</p>
             </div>
+            {/* <div>
+                <p>Total Orders: {totalOrders}</p>
+                <p>Orders without DevBoy: {ordersWithoutDevBoy}</p>
+                <p>Total Price: {totalPrice.toFixed(2)}</p>
+                {/* Display additional stats here if needed */}
+            {/* </div>  */}
             {filteredOrders.map(order => (
-                <OrderItem key={`${order.uuidOrder}-${order.timeStamp}`} orderData={order} devBoys={devBoys} />
-            ))}
+    <OrderItem key={`${order.uuidOrder}-${order.timeStamp}`} orderData={order} devBoys={devBoys} onDevBoyAssigned={handleDevBoyAssignment} />
+))}
         </div>
     );
 };

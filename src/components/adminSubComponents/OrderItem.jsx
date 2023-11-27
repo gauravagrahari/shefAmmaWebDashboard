@@ -5,7 +5,7 @@ import config from '../context/constants';
 
 // const apiUrl = process.env.REACT_APP_API_URL;
 const apiUrl =  config.URL;
-    const OrderItem = ({ orderData, devBoys }) => {
+const OrderItem = ({ orderData, devBoys, onDevBoyAssigned }) => {
     const [selectedDevBoy, setSelectedDevBoy] = useState(orderData.uuidDevBoy || '');
     const address = orderData.delAddress || {};
     const { street, houseName, city, state, pinCode } = address;
@@ -33,6 +33,9 @@ const apiUrl =  config.URL;
                 }
             });
     
+            if (response.status === 200) { // Check if the update was successful
+                onDevBoyAssigned(); // Call the callback
+            }
             console.log('Update Successful', response.data);
             alert('DevBoy updated successfully!');
         } catch (error) {
