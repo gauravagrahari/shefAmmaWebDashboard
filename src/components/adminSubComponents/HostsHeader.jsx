@@ -10,9 +10,9 @@ function HostsHeader() {
       <div className="headerItem">DDP</div>
       <div className="headerItem">DP</div>
       <div className="headerItem">Description</div>
-      <div className="headerItem">Current Message</div>
+      {/* <div className="headerItem">Current Message</div> */}
       <div className="headerItem">Provided Meals</div>
-      <div className="headerItem">Geocode</div>
+      {/* <div className="headerItem">Geocode</div> */}
       <div className="headerItem">Rating</div>
       <div className="headerItem">Actions</div> {/* Placeholder for Update/View buttons */}
     </div>

@@ -4,9 +4,9 @@ import '../../index.css';
 const DevBoyHeader = () => {
     return (
         <div className="devboy-header">
-            <div>ID</div>
+            {/* <div>ID</div> */}
             <div>Name</div>
-            <div>Geocode</div>
+            {/* <div>Geocode</div> */}
             <div>Display Picture</div>
             <div>Address</div>
             <div>Status</div>

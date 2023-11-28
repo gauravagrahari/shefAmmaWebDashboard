@@ -2,35 +2,53 @@ import React, { useContext, useEffect } from 'react';
 import DevBoyHeader from '../adminSubComponents/DevBoyHeader';
 import DevBoyDetails from '../adminSubComponents/DevBoyDetails';
 import axios from 'axios';
-import { DevBoyContext } from '../context/DevBoyContext'; // Adjust the import path
+import { DevBoyContext } from '../context/DevBoyContext';
 import config from '../context/constants';
 
-// const apiUrl = process.env.REACT_APP_API_URL;
-const apiUrl =  config.URL;
+const apiUrl = config.URL;
 
 const DevBoyList = () => {
   const { devBoys, updateDevBoys } = useContext(DevBoyContext);
+
+  const refreshDevBoys = async () => {
+    try{
+    const response = await axios.post(`${apiUrl}/admin/getAllDevBoys`);
+    updateDevBoys(response.data);
+    localStorage.setItem('devBoys', JSON.stringify(response.data));
+    console.log("devBoys refreshed");
+  }catch (err) {
+    console.error("Error fetching hosts", err);
+  }
+  };
   useEffect(() => {
     const fetchDevBoys = async () => {
-      try {
-        const response = await axios.post(`${apiUrl}/admin/getAllDevBoys`);
-        updateDevBoys(response.data);
-      } catch (err) {
-        console.error("Error while fetching DevBoy list", err);
+      // Fetch only if context is empty
+      if (devBoys.length === 0) {
+        const localDevBoys = localStorage.getItem('devBoys');
+        if (localDevBoys) {
+          updateDevBoys(JSON.parse(localDevBoys));
+        } else {
+          const response = await axios.post(`${apiUrl}/admin/getAllDevBoys`);
+          updateDevBoys(response.data);
+          localStorage.setItem('devBoys', JSON.stringify(response.data));
+        }
       }
     };
 
     fetchDevBoys();
-  }, [updateDevBoys]);
+  }, [devBoys, updateDevBoys]); // Dependency array includes devBoys and updateDevBoys
 
-  return (
-    <div>
-      <DevBoyHeader />
-      {devBoys.map((devBoy) => (
-        <DevBoyDetails key={devBoy.uuidDevBoy} devBoy={devBoy} />
-      ))}
-    </div>
-  );
+return (
+  <div>
+    <DevBoyHeader />
+    <button onClick={refreshDevBoys} style={{ position: 'absolute', top: '10px', right: '10px' }}>
+      Refresh DevBoys
+    </button>
+    {devBoys.map((devBoy) => (
+      <DevBoyDetails key={devBoy.uuidDevBoy} devBoy={devBoy} />
+    ))}
+  </div>
+);
 };
 
 export default DevBoyList;

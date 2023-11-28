@@ -9,9 +9,11 @@ import OrderListDevBoy from './components/adminComponents/OrderListDevBoy';
 import { DevBoyProvider } from './components/context/DevBoyContext';
 import { HostProvider } from './components/context/HostContext';
 import OrderList from './components/adminComponents/OrderList';
+import { OrderListProvider } from './components/context/OrderListContext';
 
 function App() {
   return (
+    <OrderListProvider>
     <DevBoyProvider>
       <HostProvider> 
         <Router>
@@ -27,6 +29,8 @@ function App() {
         </Router>
       </HostProvider>
     </DevBoyProvider>
+    </OrderListProvider>
+
   );
 }
 

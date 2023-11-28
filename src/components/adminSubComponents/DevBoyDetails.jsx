@@ -38,10 +38,10 @@ const DevBoyDetails = ({ devBoy }) => {
 
     const handleViewOrders = async () => {
         try {
-            const response = await axios.get(`http://your-api-url/admin/devOrders`, {
+            const response = await axios.get(`${apiUrl}/admin/devOrders`, {
                 headers: { id: editableDevBoy.uuidDevBoy }
             });
-            navigate('/order-list-devBoy', { devBoyDetails: editableDevBoy, orders: response.data });
+            navigate('/order-list-devBoy', { state: { devBoyDetails: editableDevBoy, orders: response.data } });
         } catch (error) {
             console.error('Error fetching orders:', error);
             alert('Failed to fetch orders.');
@@ -50,11 +50,11 @@ const DevBoyDetails = ({ devBoy }) => {
 
     const handleViewOrdersByStatus = async () => {
         try {
-            const response = await axios.get(`http://your-api-url/admin/getOrdersByStatus`, {
+            const response = await axios.get(`${apiUrl}/admin/getOrdersByStatus`, {
                 headers: { id: editableDevBoy.uuidDevBoy },
                 params: { gsiName: 'gsi2', status: selectedStatus }
             });
-            navigate('/order-list-devboy', { devBoyDetails: editableDevBoy, orders: response.data });
+            navigate('/order-list-devboy', { state: { devBoyDetails: editableDevBoy, orders: response.data } });
         } catch (error) {
             console.error('Error fetching orders:', error);
             alert('Failed to fetch orders.');
