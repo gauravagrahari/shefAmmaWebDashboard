@@ -65,7 +65,9 @@ const HostsItem = ({ hostData, onViewOrders }) => {
           alert('Failed to fetch orders.');
       }
   };
-
+  const handleViewMeals = () => {
+    navigate('/meals-list', { state: { hostId: hostData.uuidHost } });
+};
   return (
     <div className="hostItemContainer">
       <input
@@ -167,6 +169,9 @@ const HostsItem = ({ hostData, onViewOrders }) => {
                 <button onClick={handleViewOrdersByStatus} className="viewOrdersButton">
                     Get Orders
                 </button>
+                <button onClick={handleViewMeals} className="viewMealsButton">
+                Get Meals
+            </button>
             </div>
     </div>
   );

@@ -10,6 +10,7 @@ import { DevBoyProvider } from './components/context/DevBoyContext';
 import { HostProvider } from './components/context/HostContext';
 import OrderList from './components/adminComponents/OrderList';
 import { OrderListProvider } from './components/context/OrderListContext';
+import MealsList from './components/adminComponents/MealsList';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
             <Route path="/order-list-host" element={<OrderListHost />} />
             <Route path="/order-list" element={<OrderList />} />
             <Route path="/order-list-devBoy" element={<OrderListDevBoy />} />
+            <Route path="/meals-list" element={<MealsList />} />
             {/* <Route path="*" element={<NotFound />} /> */}
           </Routes>
         </Router>
