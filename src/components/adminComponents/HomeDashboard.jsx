@@ -21,6 +21,10 @@ const HomeDashboard = () => {
         navigate('/hosts-list');
     };
 
+    const navigateToConstants = () => {
+        navigate('/constants');
+    };
+
     return (
         <div>
             <h1>Admin Dashboard</h1>
@@ -38,6 +42,8 @@ const HomeDashboard = () => {
             </div>
             <button onClick={navigateToDevBoyList}>View DevBoys</button>
             <button onClick={navigateToHostsList}>View Cooks</button>
+            <button onClick={navigateToConstants}>Open Constants</button>
+
         </div>
     );
 };
