@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import '../../index.css';
 import axios from 'axios';
 import config from '../context/constants';
+import useAuthToken from '../context/useAuthToken';
 
 // const apiUrl = process.env.REACT_APP_API_URL;
 const apiUrl =  config.URL;
@@ -9,6 +10,7 @@ const OrderItem = ({ orderData, devBoys, onDevBoyAssigned }) => {
     const [selectedDevBoy, setSelectedDevBoy] = useState(orderData.uuidDevBoy || '');
     const address = orderData.delAddress || {};
     const { street, houseName, city, state, pinCode } = address;
+    const token = useAuthToken(); 
 
     const handleDevBoyChange = (event) => {
         setSelectedDevBoy(event.target.value);
@@ -16,33 +18,31 @@ const OrderItem = ({ orderData, devBoys, onDevBoyAssigned }) => {
     const formatTime = (timestamp) => {
         return new Date(timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     };
-
     const updateDevBoy = async () => {
+  const headers = token ? { Authorization: `Bearer ${token}` } : {};
         try {
             const updatedOrder = {
-                ...orderData, // Spread the existing order data
-                uuidDevBoy: selectedDevBoy, // Update only the uuidDevBoy field
-                timeStamp:orderData.timeStamp,
-            
+                ...orderData,
+                uuidDevBoy: selectedDevBoy,
+                timeStamp: orderData.timeStamp,
             };
-    
-            // Make the PUT request to the server
+
             const response = await axios.put(`${apiUrl}/admin/updateOrder`, updatedOrder, {
-                params: {
-                    attributeName: 'uuidDevBoy' // Specify the attribute name being updated
-                }
+                headers,
+                params: { attributeName: 'uuidDevBoy' }
             });
-    
-            if (response.status === 200) { // Check if the update was successful
-                onDevBoyAssigned(); // Call the callback
+
+            if (response.status === 200) {
+                onDevBoyAssigned();
+                console.log('Update Successful', response.data);
+                alert('DevBoy updated successfully!');
             }
-            console.log('Update Successful', response.data);
-            alert('DevBoy updated successfully!');
         } catch (error) {
             console.error('Error updating DevBoy for order', error);
             alert('Failed to update DevBoy.');
         }
     };
+
     const getMealTypeName = (mealType) => {
         const mealTypes = { b: 'Breakfast', l: 'Lunch', d: 'Dinner' };
         return mealTypes[mealType] || 'Unknown';

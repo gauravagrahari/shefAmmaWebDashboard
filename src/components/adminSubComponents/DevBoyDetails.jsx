@@ -4,6 +4,7 @@ import '../../index.css';
 import { useNavigate } from 'react-router-dom';
 
 import config from '../context/constants';
+import useAuthToken from '../context/useAuthToken';
 
 // const apiUrl = process.env.REACT_APP_API_URL;
 const apiUrl =  config.URL;
@@ -14,7 +15,8 @@ const DevBoyDetails = ({ devBoy }) => {
     });
     const [selectedStatus, setSelectedStatus] = useState('new');
     const navigate = useNavigate(); 
-
+    const token = useAuthToken(); 
+    const headers = token ? { Authorization: `Bearer ${token}` } : {};
     const handleChange = (e) => {
         setEditableDevBoy({ ...editableDevBoy, [e.target.name]: e.target.value });
     };
@@ -26,8 +28,9 @@ const DevBoyDetails = ({ devBoy }) => {
     const handleUpdate = async () => {
         try {
             const response = await axios.put(`${apiUrl}/admin/updateDevBoy`, editableDevBoy, {
+                headers,
                 params: { attributeName: 'status' }
-            });
+              });
             console.log('Update Successful', response.data);
             alert('DevBoy details updated successfully!');
         } catch (error) {
@@ -39,8 +42,8 @@ const DevBoyDetails = ({ devBoy }) => {
     const handleViewOrders = async () => {
         try {
             const response = await axios.get(`${apiUrl}/admin/devOrders`, {
-                headers: { id: editableDevBoy.uuidDevBoy }
-            });
+                headers: { ...headers, id: editableDevBoy.uuidDevBoy }
+              });
             navigate('/order-list-devBoy', { state: { devBoyDetails: editableDevBoy, orders: response.data } });
         } catch (error) {
             console.error('Error fetching orders:', error);
@@ -51,9 +54,9 @@ const DevBoyDetails = ({ devBoy }) => {
     const handleViewOrdersByStatus = async () => {
         try {
             const response = await axios.get(`${apiUrl}/admin/getOrdersByStatus`, {
-                headers: { id: editableDevBoy.uuidDevBoy },
+                headers: { ...headers, id: editableDevBoy.uuidDevBoy },
                 params: { gsiName: 'gsi2', status: selectedStatus }
-            });
+              });
             navigate('/order-list-devboy', { state: { devBoyDetails: editableDevBoy, orders: response.data } });
         } catch (error) {
             console.error('Error fetching orders:', error);

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import '../../index.css'; 
 import config from '../context/constants';
+import useAuthToken from '../context/useAuthToken';
 
 // const apiUrl = process.env.REACT_APP_API_URL;
 const apiUrl =  config.URL;
@@ -13,7 +14,8 @@ const HostsItem = ({ hostData, onViewOrders }) => {
     });
     const [selectedStatus, setSelectedStatus] = useState('new');
     const navigate = useNavigate(); // use useNavigate hook
-  
+    const token = useAuthToken(); 
+  const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
     const handleChange = (e) => {
       setEditableHost({...editableHost, [e.target.name]: e.target.value});
@@ -30,6 +32,7 @@ const HostsItem = ({ hostData, onViewOrders }) => {
   
       try {
         const response = await axios.put(`${apiUrl}/admin/updateHost`, updatedHost, {
+          headers,
           params: { attributeName }
         });
         console.log('Update response:', response.data);
@@ -43,7 +46,7 @@ const HostsItem = ({ hostData, onViewOrders }) => {
     const handleViewOrders = async () => {
       try {
         const response = await axios.get(`${apiUrl}/admin/hostOrders`, {
-          headers: { hostID: editableHost.uuidHost }
+          headers: { ...headers, hostID: editableHost.uuidHost }
         });
         console.log('Orders:', response.data);
         navigate('/order-list-host', { state: { hostDetails: editableHost, orders: response.data } });
@@ -54,10 +57,10 @@ const HostsItem = ({ hostData, onViewOrders }) => {
     };
     const handleViewOrdersByStatus = async () => {
       try {
-          const response = await axios.get(`${apiUrl}/admin/getOrdersByStatus`, {
-              headers: { id: editableHost.uuidHost },
-              params: { gsiName: 'gsi1', status: selectedStatus }
-          });
+        const response = await axios.get(`${apiUrl}/admin/getOrdersByStatus`, {
+          headers: { ...headers, id: editableHost.uuidHost },
+          params: { gsiName: 'gsi1', status: selectedStatus }
+        });
           console.log('Orders:', response.data);
           navigate('/order-list-host', { state: { hostDetails: editableHost, orders: response.data } });
         } catch (error) {

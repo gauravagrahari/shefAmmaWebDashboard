@@ -4,6 +4,7 @@ import axios from 'axios';
 import MealDetail from '../adminSubComponents/MealDetail';
 import MealHeader from '../adminSubComponents/MealHeader';
 import config from '../context/constants';
+import useAuthToken from '../context/useAuthToken';
 
 const apiUrl = config.URL;
 
@@ -11,21 +12,25 @@ const MealsList = () => {
     const [meals, setMeals] = useState([]);
     const location = useLocation();
     const { hostId } = location.state;
+    const token = useAuthToken(); 
 
     useEffect(() => {
+        const token = useAuthToken(); 
+        const headers = token ? { Authorization: `Bearer ${token}` } : {};
+      
         const fetchMeals = async () => {
-            try {
-                const response = await axios.get(`${apiUrl}/admin/host/mealItems`, {
-                    headers: { id: hostId }
-                });
-                setMeals(response.data);
-            } catch (error) {
-                console.error('Error fetching meals:', error);
-            }
+          try {
+            const response = await axios.get(`${apiUrl}/admin/host/mealItems`, {
+              headers: { ...headers, id: hostId }
+            });
+            setMeals(response.data);
+          } catch (error) {
+            console.error('Error fetching meals:', error);
+          }
         };
-
+      
         fetchMeals();
-    }, [hostId]);
+      }, [hostId]);      
 
     return (
         <div>

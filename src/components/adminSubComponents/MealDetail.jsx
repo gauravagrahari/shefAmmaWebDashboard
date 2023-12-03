@@ -1,14 +1,20 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import config from '../context/constants';
+import useAuthToken from '../context/useAuthToken';
 
 const apiUrl = config.URL;
 
 const MealDetail = ({ meal }) => {
     const [editableMeal, setEditableMeal] = useState(meal);
     const [attributeToEdit, setAttributeToEdit] = useState('');
+<<<<<<< Updated upstream
     const [isUpdating, setIsUpdating] = useState(false);
 
+=======
+    const token = useAuthToken(); 
+    const headers = token ? { Authorization: `Bearer ${token}` } : {};
+>>>>>>> Stashed changes
     const handleChange = (e) => {
         if (!isUpdating) {
             setEditableMeal({ ...editableMeal, [e.target.name]: e.target.value });
@@ -22,8 +28,9 @@ const MealDetail = ({ meal }) => {
         setIsUpdating(true);
         try {
             const response = await axios.put(`${apiUrl}/admin/host/meal`, editableMeal, {
+                headers,
                 params: { attributeName: attributeToEdit }
-            });
+              });
             console.log('Meal updated:', response.data);
             alert(`Meal ${attributeToEdit} updated successfully!`);
         } catch (error) {
