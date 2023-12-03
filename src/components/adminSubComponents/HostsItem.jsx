@@ -13,35 +13,42 @@ const HostsItem = ({ hostData, onViewOrders }) => {
       status: hostData.status ? 'Active' : 'Inactive' // Convert boolean to string representation
     });
     const [selectedStatus, setSelectedStatus] = useState('new');
+    const [lastEditedAttribute, setLastEditedAttribute] = useState(null);
+
     const navigate = useNavigate(); // use useNavigate hook
     const token = useAuthToken(); 
   const headers = token ? { Authorization: `Bearer ${token}` } : {};
-
-    const handleChange = (e) => {
-      setEditableHost({...editableHost, [e.target.name]: e.target.value});
-  };
+  const handleChange = (e) => {
+    setEditableHost({ ...editableHost, [e.target.name]: e.target.value });
+    setLastEditedAttribute(e.target.name); // Keep track of the last edited attribute
+};
 
   const handleStatusChange = (e) => {
       setSelectedStatus(e.target.value);
   };
-    const handleUpdate = async (attributeName) => {
-      const updatedHost = {
+  const handleUpdate = async () => {
+    if (!lastEditedAttribute) {
+        alert('No changes detected.');
+        return;
+    }
+
+    const updatedHost = {
         ...editableHost,
         status: editableHost.status === 'Active' // Convert string representation back to boolean
-      };
-  
-      try {
+    };
+
+    try {
         const response = await axios.put(`${apiUrl}/admin/updateHost`, updatedHost, {
-          headers,
-          params: { attributeName }
+            headers,
+            params: { attributeName: lastEditedAttribute }
         });
         console.log('Update response:', response.data);
         alert('Details updated successfully!');
-      } catch (error) {
+    } catch (error) {
         console.error('Error updating host:', error);
         alert('Failed to update details.');
-      }
-    };
+    }
+};
   
     const handleViewOrders = async () => {
       try {

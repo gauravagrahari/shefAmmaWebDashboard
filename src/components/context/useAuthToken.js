@@ -11,7 +11,7 @@ const useAuthToken = () => {
       navigate('/login'); // Adjust the path as per your routing setup
     }
   }, [navigate, token]);
-
+// console.log("-------->"+token);
   return token;
 };
 

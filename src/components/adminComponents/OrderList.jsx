@@ -26,6 +26,7 @@ const OrderList = () => {
     const [totalPrice, setTotalPrice] = useState(0);
     const { orderListState, setOrderListState } = useContext(OrderListContext);
     const token = useAuthToken(); 
+    console.log("------fsfsavavaf-->"+token);
     const devBoys = JSON.parse(localStorage.getItem('devBoys')) || [];
     useEffect(() => {
       
@@ -39,7 +40,7 @@ const OrderList = () => {
                     const encodedHostIds = hostIds.join('&ids=');
                     const queryString = `ids=${encodedHostIds}&gsiName=gsi1&status=${encodeURIComponent(status)}`;
                     const fullUrl = `${apiUrl}/admin/getAllOrdersByStatus?${queryString}`;
-                    const response = await axios.get(fullUrl);
+                    const response = await axios.get(fullUrl, { headers: headers});
                     setOrders(response.data);
                 } else {
                     alert('Please fetch Hosts data from the server.');

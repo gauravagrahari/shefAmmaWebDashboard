@@ -12,20 +12,19 @@ function AdminLogin() {
   const handleChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
+const authRequest={   phone: credentials.phone,
+  password: credentials.password};
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${apiUrl}/adminLogin`, {
-        phone: credentials.phone,
-        password: credentials.password
-      });
+      const response = await axios.post(`${apiUrl}/admin/Login`, authRequest);
 
       if (response.status === 200) {
         localStorage.setItem('token', response.data.token);
         localStorage.setItem('uuidAdmin', response.data.uuidAdmin);
         localStorage.setItem('timeStamp', response.data.timeStamp);
-        navigate('/'); // Navigate to the desired route after login
+        navigate('/dashboard'); // Navigate to the desired route after login
       }
     } catch (error) {
       if (error.response) {

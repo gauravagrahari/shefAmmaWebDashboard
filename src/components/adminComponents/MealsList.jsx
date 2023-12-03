@@ -14,8 +14,7 @@ const MealsList = () => {
     const { hostId } = location.state;
     const token = useAuthToken(); 
 
-    useEffect(() => {
-        const token = useAuthToken(); 
+    useEffect(() => { 
         const headers = token ? { Authorization: `Bearer ${token}` } : {};
       
         const fetchMeals = async () => {

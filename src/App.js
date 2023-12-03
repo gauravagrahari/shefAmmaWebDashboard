@@ -10,8 +10,6 @@ import { HostProvider } from './components/context/HostContext';
 import OrderList from './components/adminComponents/OrderList';
 import { OrderListProvider } from './components/context/OrderListContext';
 import MealsList from './components/adminComponents/MealsList';
-<<<<<<< Updated upstream
-=======
 import ConstantChargesComponent from './components/adminComponents/ConstantChargesComponent';
 import AdminLogin from './components/adminComponents/AdminLogin';
 import { useNavigate } from 'react-router-dom';
@@ -19,8 +17,6 @@ import DevBoyDetails from './components/adminSubComponents/DevBoyDetails';
 import HostsItem from './components/adminSubComponents/HostsItem';
 import MealDetail from './components/adminSubComponents/MealDetail';
 import OrderItem from './components/adminSubComponents/OrderItem';
->>>>>>> Stashed changes
-
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   // const navigate = useNavigate();
@@ -43,16 +39,14 @@ function App() {
             <Route path="/order-list" element={<OrderList />} />
             <Route path="/order-list-devBoy" element={<OrderListDevBoy />} />
             <Route path="/meals-list" element={<MealsList />} />
-<<<<<<< Updated upstream
-            {/* <Route path="*" element={<NotFound />} /> */}
-=======
+            <Route path="/dashboard" element={<HomeDashboard />} />
             <Route path="/constants" element={<ConstantChargesComponent />} />
             <Route path="/admin-login" element={<AdminLogin />} />
             <Route path="/devBoy-details" element={<DevBoyDetails />} />
             <Route path="/hosts-item" element={<HostsItem />} />
             <Route path="/meal-detail" element={<MealDetail />} />
             <Route path="/order-Item" element={<OrderItem />} />
->>>>>>> Stashed changes
+
           </Routes>
         </Router>
       </HostProvider>

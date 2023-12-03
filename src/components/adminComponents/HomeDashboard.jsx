@@ -20,6 +20,12 @@ const HomeDashboard = () => {
     const navigateToHostsList = () => {
         navigate('/hosts-list');
     };
+    
+    const handleLogout = () => {
+        localStorage.removeItem('token'); // Assuming token is stored in local storage
+        navigate('/admin-login'); // Replace '/login' with the path to your login route
+    };
+
 
     return (
         <div>
@@ -38,6 +44,7 @@ const HomeDashboard = () => {
             </div>
             <button onClick={navigateToDevBoyList}>View DevBoys</button>
             <button onClick={navigateToHostsList}>View Cooks</button>
+            <button onClick={handleLogout}>Logout</button>
         </div>
     );
 };
