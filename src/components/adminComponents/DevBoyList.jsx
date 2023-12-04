@@ -10,11 +10,12 @@ const apiUrl = config.URL;
 
 const DevBoyList = () => {
   const token = useAuthToken(); 
+  const headers = token ? { Authorization: `Bearer ${token}` } : {};
   const { devBoys, updateDevBoys } = useContext(DevBoyContext);
 
   const refreshDevBoys = async () => {
     try{
-    const response = await axios.post(`${apiUrl}/admin/getAllDevBoys`);
+    const response = await axios.post(`${apiUrl}/admin/getAllDevBoys`,{},headers);
     updateDevBoys(response.data);
     localStorage.setItem('devBoys', JSON.stringify(response.data));
     console.log("devBoys refreshed");
@@ -25,7 +26,7 @@ const DevBoyList = () => {
   useEffect(() => {
 // Add token to axios request headers
 const fetchDevBoys = async () => {
-  const headers = token ? { Authorization: `Bearer ${token}` } : {};
+
 
   try {
     const response = await axios.post(`${apiUrl}/admin/getAllDevBoys`, {}, { headers });

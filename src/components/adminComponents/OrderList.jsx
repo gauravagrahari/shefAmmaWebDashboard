@@ -51,7 +51,6 @@ const OrderList = () => {
                 setLoading(false);
             }
         };
-
             fetchOrdersByStatus();
 
     }, []);

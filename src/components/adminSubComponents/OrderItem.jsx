@@ -8,38 +8,54 @@ import useAuthToken from '../context/useAuthToken';
 const apiUrl =  config.URL;
 const OrderItem = ({ orderData, devBoys, onDevBoyAssigned }) => {
     const [selectedDevBoy, setSelectedDevBoy] = useState(orderData.uuidDevBoy || '');
+    const [selectedStatus, setSelectedStatus] = useState(orderData.status);
+    const [lastEditedAttribute, setLastEditedAttribute] = useState(null);
     const address = orderData.delAddress || {};
     const { street, houseName, city, state, pinCode } = address;
     const token = useAuthToken(); 
 
     const handleDevBoyChange = (event) => {
         setSelectedDevBoy(event.target.value);
+        setLastEditedAttribute('uuidDevBoy');
     };
+
+    const handleStatusChange = (event) => {
+        setSelectedStatus(event.target.value);
+        setLastEditedAttribute('status');
+    };
+    const isOrderNew = orderData.status === 'new';
+    const activeDevBoys = isOrderNew ? devBoys.filter(devBoy => devBoy.status === 'true') : devBoys;
+//     console.log("All DevBoys:", devBoys);
+// console.log("Active DevBoys:", activeDevBoys);
+ 
     const formatTime = (timestamp) => {
         return new Date(timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     };
-    const updateDevBoy = async () => {
-  const headers = token ? { Authorization: `Bearer ${token}` } : {};
-        try {
-            const updatedOrder = {
-                ...orderData,
-                uuidDevBoy: selectedDevBoy,
-                timeStamp: orderData.timeStamp,
-            };
+    const updateOrder = async () => {
+        if (!lastEditedAttribute) {
+            alert('No changes detected.');
+            return;
+        }
 
+        const updatedOrder = {
+            ...orderData,
+            [lastEditedAttribute]: lastEditedAttribute === 'uuidDevBoy' ? selectedDevBoy : selectedStatus,
+        };
+
+        const headers = token ? { Authorization: `Bearer ${token}` } : {};
+        try {
             const response = await axios.put(`${apiUrl}/admin/updateOrder`, updatedOrder, {
                 headers,
-                params: { attributeName: 'uuidDevBoy' }
+                params: { attributeName: lastEditedAttribute }
             });
 
             if (response.status === 200) {
                 onDevBoyAssigned();
-                console.log('Update Successful', response.data);
-                alert('DevBoy updated successfully!');
+                alert('Order updated successfully!');
             }
         } catch (error) {
-            console.error('Error updating DevBoy for order', error);
-            alert('Failed to update DevBoy.');
+            console.error('Error updating order', error);
+            alert('Failed to update order.');
         }
     };
 
@@ -51,15 +67,23 @@ const OrderItem = ({ orderData, devBoys, onDevBoyAssigned }) => {
     return (
         <div className="order-item">
             {/* <div>{orderData.uuidOrder}</div> */}
-            <div>{formatTime(orderData.timeStamp)}</div>
-            <div>{orderData.status}</div>
+        <div>{formatTime(orderData.timeStamp)}</div>
+        <select value={selectedStatus} onChange={handleStatusChange}>
+                <option value="new">New</option>
+                <option value="ip">In Progress</option>
+                <option value="pkd">Picked</option>
+                <option value="com">Completed</option>
+                <option value="can">Cancelled</option>
+                <option value="unpkd">Unpicked</option>
+                <option value="undel">Undelivered</option>
+            </select>
             <select value={selectedDevBoy} onChange={handleDevBoyChange}>
-        <option value="">Select Dev Boy</option>
-        {devBoys.map(devBoy => (
-          <option key={devBoy.uuidDevBoy} value={devBoy.uuidDevBoy}>{devBoy.name}</option>
-        ))}
-      </select>
-            <button onClick={updateDevBoy}>Update Dev Boy</button>            
+                <option value="">Select Dev Boy</option>
+                {devBoys.map(devBoy => (
+                    <option key={devBoy.uuidDevBoy} value={devBoy.uuidDevBoy}>{devBoy.name}</option>
+                ))}
+            </select>
+            <button onClick={updateOrder}>Update Dev Boy</button>            
             <div>{orderData.amount}</div>
             <div>{orderData.noOfServing}</div>
             <div>{orderData.nameGuest}</div>
@@ -74,7 +98,7 @@ const OrderItem = ({ orderData, devBoys, onDevBoyAssigned }) => {
             <div>{orderData.itemPrice}</div>
             <div>{orderData.delTimeAndDay}</div>
             {/* <div>{orderData.delAddress}</div> */}
- {orderData.delAddress ? (
+            {orderData.delAddress ? (
                 <div>
                     <div>Street: {street}</div>
                     <div>House Name: {houseName}</div>

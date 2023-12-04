@@ -34,7 +34,7 @@ const HomeDashboard = () => {
                 <select value={selectedStatus} onChange={handleStatusChange}>
                     <option value="new">New</option>
                     <option value="ip">In Progress</option>
-                    <option value="pkd">Packed</option>
+                    <option value="pkd">Picked</option>
                     <option value="com">Completed</option>
                     <option value="can">Cancelled</option>
                     <option value="unpkd">Unpicked</option>

@@ -43,17 +43,22 @@ function HostList() {
       fetchHosts();
     }
   }, [hosts, updateHosts]);
-
+  const handleHostUpdated = (updatedHost) => {
+    const newHosts = hosts.map(host => 
+        host.uuidHost === updatedHost.uuidHost ? updatedHost : host
+    );
+    updateHosts(newHosts);
+};
 return (
-    <div>
-        <HostsHeader />
-        <button onClick={refreshHosts} style={{ position: 'absolute', top: '10px', right: '10px' }}>
-            Refresh Hosts
-        </button>
-        {hosts && Array.isArray(hosts) && hosts.map((host) => (
-            <HostsItem key={host.uuidHost} hostData={host} />
-        ))}
-    </div>
+  <div>
+      <HostsHeader />
+      <button onClick={refreshHosts} style={{ position: 'absolute', top: '10px', right: '10px' }}>
+          Refresh Hosts
+      </button>
+      {hosts && Array.isArray(hosts) && hosts.map((host) => (
+          <HostsItem key={host.uuidHost} hostData={host} onHostUpdated={handleHostUpdated} />
+      ))}
+  </div>
 );
-        }
+}
 export default HostList;
