@@ -4,15 +4,18 @@ import DevBoyDetails from '../adminSubComponents/DevBoyDetails';
 import axios from 'axios';
 import { DevBoyContext } from '../context/DevBoyContext';
 import config from '../context/constants';
+import useAuthToken from '../context/useAuthToken';
 
 const apiUrl = config.URL;
 
 const DevBoyList = () => {
+  const token = useAuthToken(); 
+  const headers = token ? { Authorization: `Bearer ${token}` } : {};
   const { devBoys, updateDevBoys } = useContext(DevBoyContext);
 
   const refreshDevBoys = async () => {
     try{
-    const response = await axios.post(`${apiUrl}/admin/getAllDevBoys`);
+    const response = await axios.post(`${apiUrl}/admin/getAllDevBoys`,{},headers);
     updateDevBoys(response.data);
     localStorage.setItem('devBoys', JSON.stringify(response.data));
     console.log("devBoys refreshed");
@@ -21,19 +24,19 @@ const DevBoyList = () => {
   }
   };
   useEffect(() => {
-    const fetchDevBoys = async () => {
-      // Fetch only if context is empty
-      if (devBoys.length === 0) {
-        const localDevBoys = localStorage.getItem('devBoys');
-        if (localDevBoys) {
-          updateDevBoys(JSON.parse(localDevBoys));
-        } else {
-          const response = await axios.post(`${apiUrl}/admin/getAllDevBoys`);
-          updateDevBoys(response.data);
-          localStorage.setItem('devBoys', JSON.stringify(response.data));
-        }
-      }
-    };
+// Add token to axios request headers
+const fetchDevBoys = async () => {
+
+
+  try {
+    const response = await axios.post(`${apiUrl}/admin/getAllDevBoys`, {}, { headers });
+    updateDevBoys(response.data);
+    localStorage.setItem('devBoys', JSON.stringify(response.data));
+  } catch (err) {
+    console.error("Error fetching devBoys", err);
+  }
+};
+
 
     fetchDevBoys();
   }, [devBoys, updateDevBoys]); // Dependency array includes devBoys and updateDevBoys

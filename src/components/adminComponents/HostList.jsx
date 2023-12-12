@@ -4,56 +4,65 @@ import { HostContext } from '../context/HostContext';
 import HostsItem from '../adminSubComponents/HostsItem';
 import config from '../context/constants';
 import HostsHeader from '../adminSubComponents/HostsHeader';
+import useAuthToken from '../context/useAuthToken';
 
 const apiUrl = config.URL;
 
 function HostList() {
   const { hosts, updateHosts } = useContext(HostContext);
-
-const refreshHosts = async () => {
-  try{
-  const response = await axios.post(`${apiUrl}/admin/getAllHosts`);
-  updateHosts(response.data);
-  localStorage.setItem('hosts', JSON.stringify(response.data));
-  console.log("hosts refreshed");
-  }catch (err) {
-    console.error("Error fetching hosts", err);
-  }
-};
-  useEffect(() => {
-    const fetchHosts = async () => {
-      try {
-        const localHosts = localStorage.getItem('hosts');
-        if (localHosts) {
-          updateHosts(JSON.parse(localHosts));
+  const token = useAuthToken(); 
+  const headers = token ? { Authorization: `Bearer ${token}` } : {};
+  const refreshHosts = async () => {
+    try {
+        const response = await axios.post(`${apiUrl}/admin/getAllHosts`, {}, { headers });
+        if (response.data && Array.isArray(response.data)) {
+            updateHosts(response.data);
+            localStorage.setItem('hosts', JSON.stringify(response.data));
+            console.log("hosts refreshed");
         } else {
-          const response = await axios.post(`${apiUrl}/admin/getAllHosts`);
-          updateHosts(response.data);
-          localStorage.setItem('hosts', JSON.stringify(response.data));
+            console.error("Received data is not an array", response.data);
         }
-      } catch (err) {
+    } catch (err) {
         console.error("Error fetching hosts", err);
-      }
-    };
-  
-    // Fetch hosts if the context is empty
-    if (hosts.length === 0) {
-      fetchHosts();
     }
-  }, [hosts, updateHosts]);
+};
+useEffect(() => {
+  const fetchHosts = async () => {
+    try {
+      const response = await axios.post(`${apiUrl}/admin/getAllHosts`, {}, { headers });
+      updateHosts(response.data);
+      localStorage.setItem('hosts', JSON.stringify(response.data));
+    } catch (err) {
+      console.error("Error fetching hosts", err);
+    }
+  };
 
+  const storedHosts = localStorage.getItem('hosts');
+  if (storedHosts) {
+    updateHosts(JSON.parse(storedHosts));
+  } else if (hosts.length === 0) {
+  fetchHosts();
+  }
+}, [hosts, updateHosts]); 
 
-  return (
-    <div>
+const handleHostUpdated = (updatedHost) => {
+  const newHosts = hosts.map(host => 
+      host.uuidHost === updatedHost.uuidHost ? updatedHost : host
+  );
+  updateHosts(newHosts);
+  localStorage.setItem('hosts', JSON.stringify(newHosts));
+};
+
+return (
+  <div>
       <HostsHeader />
       <button onClick={refreshHosts} style={{ position: 'absolute', top: '10px', right: '10px' }}>
-        Refresh Hosts
+          Refresh Hosts
       </button>
-      {hosts.map((host) => (
-        <HostsItem key={host.uuidHost} hostData={host} />
+      {hosts && Array.isArray(hosts) && hosts.map((host) => (
+          <HostsItem key={host.uuidHost} hostData={host} onHostUpdated={handleHostUpdated} />
       ))}
-    </div>
-  );
+  </div>
+);
 }
-
 export default HostList;

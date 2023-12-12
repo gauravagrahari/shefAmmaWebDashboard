@@ -7,6 +7,7 @@ import { HostContext } from '../context/HostContext';
 import { DevBoyContext } from '../context/DevBoyContext';
 import config from '../context/constants';
 import { OrderListContext } from '../context/OrderListContext';
+import useAuthToken from '../context/useAuthToken';
 
 const apiUrl = config.URL;
 
@@ -24,21 +25,22 @@ const OrderList = () => {
     const [ordersWithoutDevBoy, setOrdersWithoutDevBoy] = useState(0);
     const [totalPrice, setTotalPrice] = useState(0);
     const { orderListState, setOrderListState } = useContext(OrderListContext);
-
+    const token = useAuthToken(); 
+    console.log("------fsfsavavaf-->"+token);
     const devBoys = JSON.parse(localStorage.getItem('devBoys')) || [];
     useEffect(() => {
+      
+        const headers = token ? { Authorization: `Bearer ${token}` } : {};
+      
         const fetchOrdersByStatus = async () => {
-            try {
-                // Fetch hosts and devBoys from Local Storage
-                const storedHosts = JSON.parse(localStorage.getItem('hosts')) || [];
-               
-
-                if (storedHosts.length > 0) {
+          try {
+            const storedHosts = JSON.parse(localStorage.getItem('hosts')) || [];
+            if (storedHosts.length > 0) {
                     const hostIds = storedHosts.map(host => encodeURIComponent(host.uuidHost));
                     const encodedHostIds = hostIds.join('&ids=');
                     const queryString = `ids=${encodedHostIds}&gsiName=gsi1&status=${encodeURIComponent(status)}`;
                     const fullUrl = `${apiUrl}/admin/getAllOrdersByStatus?${queryString}`;
-                    const response = await axios.get(fullUrl);
+                    const response = await axios.get(fullUrl, { headers: headers});
                     setOrders(response.data);
                 } else {
                     alert('Please fetch Hosts data from the server.');
@@ -49,16 +51,10 @@ const OrderList = () => {
                 setLoading(false);
             }
         };
-
-        // if (status) {
             fetchOrdersByStatus();
-        // }
+
     }, []);
-    useEffect(() => {
-        console.log("OrderList mounted");
-        // Temporarily comment out the fetch logic for debugging
-        // fetchOrdersByStatus();
-    }, []);
+
     
     useEffect(() => {
         const updatedOrders = orders.filter(order => mealTypeFilter === 'all' || order.mealType === mealTypeFilter)

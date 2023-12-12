@@ -20,10 +20,17 @@ const HomeDashboard = () => {
     const navigateToHostsList = () => {
         navigate('/hosts-list');
     };
-
     const navigateToConstants = () => {
         navigate('/constants');
     };
+    
+    const handleLogout = () => {
+        localStorage.removeItem('token'); // Assuming token is stored in local storage
+        navigate('/admin-login'); // Replace '/login' with the path to your login route
+    };
+const navigateToPincodeManager=()=>{
+    navigate('/pincode-manager');
+}
 
     return (
         <div>
@@ -32,7 +39,7 @@ const HomeDashboard = () => {
                 <select value={selectedStatus} onChange={handleStatusChange}>
                     <option value="new">New</option>
                     <option value="ip">In Progress</option>
-                    <option value="pkd">Packed</option>
+                    <option value="pkd">Picked</option>
                     <option value="com">Completed</option>
                     <option value="can">Cancelled</option>
                     <option value="unpkd">Unpicked</option>
@@ -42,8 +49,9 @@ const HomeDashboard = () => {
             </div>
             <button onClick={navigateToDevBoyList}>View DevBoys</button>
             <button onClick={navigateToHostsList}>View Cooks</button>
-            <button onClick={navigateToConstants}>Open Constants</button>
-
+            <button onClick={navigateToConstants}>Constant Charges</button>
+            <button onClick={navigateToPincodeManager}>Pincodes</button>
+            <button onClick={handleLogout}>Logout</button>
         </div>
     );
 };

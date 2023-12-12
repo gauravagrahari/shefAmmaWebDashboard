@@ -1,29 +1,43 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import config from '../context/constants';
+import useAuthToken from '../context/useAuthToken';
 
 const apiUrl = config.URL;
 
 const MealDetail = ({ meal }) => {
     const [editableMeal, setEditableMeal] = useState(meal);
     const [attributeToEdit, setAttributeToEdit] = useState('');
+// <<<<<<< Updated upstream
+    const [isUpdating, setIsUpdating] = useState(false);
 
+
+    const token = useAuthToken(); 
+    const headers = token ? { Authorization: `Bearer ${token}` } : {};
+// >>>>>>> Stashed changes
     const handleChange = (e) => {
-        setEditableMeal({ ...editableMeal, [e.target.name]: e.target.value });
-        setAttributeToEdit(e.target.name);
+        if (!isUpdating) {
+            setEditableMeal({ ...editableMeal, [e.target.name]: e.target.value });
+            setAttributeToEdit(e.target.name);
+        } else {
+            alert('Please complete the current update before editing another field.');
+        }
     };
 
     const updateMeal = async () => {
+        setIsUpdating(true);
         try {
             const response = await axios.put(`${apiUrl}/admin/host/meal`, editableMeal, {
+                headers,
                 params: { attributeName: attributeToEdit }
-            });
+              });
             console.log('Meal updated:', response.data);
-            // Handle post-update logic (e.g., showing a success message)
+            alert(`Meal ${attributeToEdit} updated successfully!`);
         } catch (error) {
             console.error('Error updating meal:', error);
-            // Handle error
+            alert('Error updating meal.');
         }
+        setIsUpdating(false);
     };
 
     return (
@@ -31,17 +45,17 @@ const MealDetail = ({ meal }) => {
             <input type="text" name="nameItem" value={editableMeal.nameItem} onChange={handleChange} />
             <input type="text" name="mealType" value={editableMeal.mealType} onChange={handleChange} />
             <input type="text" name="dp" value={editableMeal.dp} onChange={handleChange} />
-            <select name="status" value={editableMeal.status} onChange={handleChange}>
-                <option value="Available">Available</option>
-                <option value="Unavailable">Unavailable</option>
+            <select name="status" value={editableMeal.status.toString()} onChange={handleChange}>
+                <option value="true">Available</option>
+                <option value="false">Unavailable</option>
             </select>
-            <input type="text" name="description" value={editableMeal.description} onChange={handleChange} />
+            <textarea type="text" name="description" value={editableMeal.description} onChange={handleChange} />
             <select name="vegetarian" value={editableMeal.vegetarian} onChange={handleChange}>
-                <option value="Yes">Yes</option>
-                <option value="No">No</option>
+                <option value="true">true</option>
+                <option value="false">false</option>
             </select>
             <input type="text" name="amount" value={editableMeal.amount} onChange={handleChange} />
-            <button onClick={updateMeal}>Update</button>
+            <button onClick={updateMeal} disabled={isUpdating}>Update</button>
         </div>
     );
 };
