@@ -12,11 +12,11 @@ import { OrderListProvider } from './components/context/OrderListContext';
 import MealsList from './components/adminComponents/MealsList';
 import ConstantChargesComponent from './components/adminComponents/ConstantChargesComponent';
 import AdminLogin from './components/adminComponents/AdminLogin';
-import { useNavigate } from 'react-router-dom';
 import DevBoyDetails from './components/adminSubComponents/DevBoyDetails';
 import HostsItem from './components/adminSubComponents/HostsItem';
 import MealDetail from './components/adminSubComponents/MealDetail';
 import OrderItem from './components/adminSubComponents/OrderItem';
+import PincodeComponent from './components/adminComponents/PincodeComponent';
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   // const navigate = useNavigate();
@@ -46,6 +46,7 @@ function App() {
             <Route path="/hosts-item" element={<HostsItem />} />
             <Route path="/meal-detail" element={<MealDetail />} />
             <Route path="/order-Item" element={<OrderItem />} />
+            <Route path="/pincode-manager" element={<PincodeComponent />} />
 
           </Routes>
         </Router>

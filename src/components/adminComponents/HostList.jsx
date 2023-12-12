@@ -26,29 +26,33 @@ function HostList() {
         console.error("Error fetching hosts", err);
     }
 };
-  useEffect(() => {
-    const fetchHosts = async () => {
-   
-      try {
-        const response = await axios.post(`${apiUrl}/admin/getAllHosts`, {}, { headers });
-        updateHosts(response.data);
-        localStorage.setItem('hosts', JSON.stringify(response.data));
-      } catch (err) {
-        console.error("Error fetching hosts", err);
-      }
-    };
-    
-    // Fetch hosts if the context is empty
-    if (hosts.length === 0) {
-      fetchHosts();
+useEffect(() => {
+  const fetchHosts = async () => {
+    try {
+      const response = await axios.post(`${apiUrl}/admin/getAllHosts`, {}, { headers });
+      updateHosts(response.data);
+      localStorage.setItem('hosts', JSON.stringify(response.data));
+    } catch (err) {
+      console.error("Error fetching hosts", err);
     }
-  }, [hosts, updateHosts]);
-  const handleHostUpdated = (updatedHost) => {
-    const newHosts = hosts.map(host => 
-        host.uuidHost === updatedHost.uuidHost ? updatedHost : host
-    );
-    updateHosts(newHosts);
+  };
+
+  const storedHosts = localStorage.getItem('hosts');
+  if (storedHosts) {
+    updateHosts(JSON.parse(storedHosts));
+  } else if (hosts.length === 0) {
+  fetchHosts();
+  }
+}, [hosts, updateHosts]); 
+
+const handleHostUpdated = (updatedHost) => {
+  const newHosts = hosts.map(host => 
+      host.uuidHost === updatedHost.uuidHost ? updatedHost : host
+  );
+  updateHosts(newHosts);
+  localStorage.setItem('hosts', JSON.stringify(newHosts));
 };
+
 return (
   <div>
       <HostsHeader />

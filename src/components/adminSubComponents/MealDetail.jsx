@@ -49,10 +49,10 @@ const MealDetail = ({ meal }) => {
                 <option value="true">Available</option>
                 <option value="false">Unavailable</option>
             </select>
-            <input type="text" name="description" value={editableMeal.description} onChange={handleChange} />
+            <textarea type="text" name="description" value={editableMeal.description} onChange={handleChange} />
             <select name="vegetarian" value={editableMeal.vegetarian} onChange={handleChange}>
-                <option value="Yes">Yes</option>
-                <option value="No">No</option>
+                <option value="true">true</option>
+                <option value="false">false</option>
             </select>
             <input type="text" name="amount" value={editableMeal.amount} onChange={handleChange} />
             <button onClick={updateMeal} disabled={isUpdating}>Update</button>
