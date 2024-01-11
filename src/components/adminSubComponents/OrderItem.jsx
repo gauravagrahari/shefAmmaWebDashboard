@@ -6,7 +6,7 @@ import useAuthToken from '../context/useAuthToken';
 
 // const apiUrl = process.env.REACT_APP_API_URL;
 const apiUrl =  config.URL;
-const OrderItem = ({ orderData, devBoys, onDevBoyAssigned }) => {
+const OrderItem = ({ orderData, devBoys, onDevBoyAssigned, hostAddress }) => {
     const [selectedDevBoy, setSelectedDevBoy] = useState(orderData.uuidDevBoy || '');
     const [selectedStatus, setSelectedStatus] = useState(orderData.status);
     const [lastEditedAttribute, setLastEditedAttribute] = useState(null);
@@ -65,10 +65,11 @@ const OrderItem = ({ orderData, devBoys, onDevBoyAssigned }) => {
     };
 
     return (
-        <div className="order-item">
-            {/* <div>{orderData.uuidOrder}</div> */}
+        <div className="order-item" style={orderItemStyle}>
         <div>{formatTime(orderData.timeStamp)}</div>
-        <select value={selectedStatus} onChange={handleStatusChange}>
+        <div style={verticalContainerStyle}>
+
+        <select value={selectedStatus} onChange={handleStatusChange} style={selectButtonStyle}>
                 <option value="new">New</option>
                 <option value="ip">In Progress</option>
                 <option value="pkd">Picked</option>
@@ -77,22 +78,20 @@ const OrderItem = ({ orderData, devBoys, onDevBoyAssigned }) => {
                 <option value="unpkd">Unpicked</option>
                 <option value="undel">Undelivered</option>
             </select>
-            <select value={selectedDevBoy} onChange={handleDevBoyChange}>
-                <option value="">Select Dev Boy</option>
+            <select value={selectedDevBoy} onChange={handleDevBoyChange} style={selectButtonStyle}>
+                <option value="">Select DevBoy</option>
                 {devBoys.map(devBoy => (
                     <option key={devBoy.uuidDevBoy} value={devBoy.uuidDevBoy}>{devBoy.name}</option>
                 ))}
             </select>
-            <button onClick={updateOrder}>Update Dev Boy</button>            
+            <button onClick={updateOrder} style={selectButtonStyle}>Update Dev Boy</button>            
+            </div>
             <div>{orderData.amount}</div>
             <div>{orderData.noOfServing}</div>
             <div>{orderData.nameGuest}</div>
-            {/* <div>{orderData.geoGuest}</div> */}
             <div>{orderData.nameHost}</div>
             <div>{orderData.phoneGuest}</div>
             <div>{orderData.phoneHost}</div>
-            {/* <div>{orderData.geoHost}</div> */}
-            <div>{orderData.uuidHost}</div>
             <div>{getMealTypeName(orderData.mealType)}</div>
             <div>{orderData.itemName}</div>
             <div>{orderData.itemPrice}</div>
@@ -100,17 +99,50 @@ const OrderItem = ({ orderData, devBoys, onDevBoyAssigned }) => {
             {/* <div>{orderData.delAddress}</div> */}
             {orderData.delAddress ? (
                 <div>
-                    <div>Street: {street}</div>
-                    <div>House Name: {houseName}</div>
-                    <div>City: {city}</div>
-                    <div>State: {state}</div>
-                    <div>Pin Code: {pinCode}</div>
+                    <div> {street}, </div>
+                    <div>{houseName}, </div>
+                    <div>{city}, </div>
+                    <div>{state}, </div>
+                    <div>{pinCode}</div>
                 </div>
             ) : (
                 <div>No address provided</div>
             )}
+             <div>{hostAddress ? (
+        <div>
+          <div>{hostAddress.street}, </div>
+          <div>{hostAddress.houseName}, </div>
+          <div>{hostAddress.city}, </div>
+          <div>{hostAddress.pinCode}, </div>
+        </div>
+      ) : (
+        <div>No host address provided</div>
+      )}
+    </div>
         </div>
     );
 };
+const orderItemStyle = {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(15, minmax(120px, 1fr))', // Same as OrdersHeader
+    gap: '10px',
+    padding: '10px',
+    borderBottom: '1px solid #eee'
+};
 
+const selectButtonStyle = {
+    padding: '5px',
+    margin: '5px 0',
+    border: '1px solid #ccc',
+    borderRadius: '4px',
+    backgroundColor: 'white',
+    cursor: 'pointer'
+};
+
+const verticalContainerStyle = {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'stretch'
+};
 export default OrderItem;

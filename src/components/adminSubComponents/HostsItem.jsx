@@ -123,30 +123,6 @@ const HostsItem = ({ hostData, onHostUpdated }) => {
         onChange={handleChange}
         className="inputField"
       />
-      <input
-        type="text"
-        name="dineCategory"
-        placeholder="Dine Category"
-        value={editableHost.dineCategory}
-        onChange={handleChange}
-        className="inputField"
-      />
-      <input
-        type="text"
-        name="DDP"
-        placeholder="DDP"
-        value={editableHost.DDP}
-        onChange={handleChange}
-        className="inputField"
-      />
-      <input
-        type="text"
-        name="DP"
-        placeholder="DP"
-        value={editableHost.DP}
-        onChange={handleChange}
-        className="inputField"
-      />
       <textarea
         name="descriptionHost"
         placeholder="Description"
@@ -154,14 +130,7 @@ const HostsItem = ({ hostData, onHostUpdated }) => {
         onChange={handleChange}
         className="textArea"
       />
-      <input
-        type="text"
-        name="currentMessage"
-        placeholder="Current Message"
-        value={editableHost.currentMessage}
-        onChange={handleChange}
-        className="inputField"
-      />
+
       <input
         type="text"
         name="providedMeals"
@@ -171,9 +140,7 @@ const HostsItem = ({ hostData, onHostUpdated }) => {
         className="inputField"
       />
       
-      <div className="geocodeField">
-        Geocode: {editableHost.geocode}
-      </div>
+
       <div className="ratingField">
         Rating: {editableHost.ratingHost}
       </div>

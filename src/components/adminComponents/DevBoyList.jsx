@@ -43,15 +43,26 @@ const fetchDevBoys = async () => {
 
 return (
   <div>
+<button onClick={refreshDevBoys} style={refreshButtonStyle}>
+    Refresh DevBoys
+</button>
+
     <DevBoyHeader />
-    <button onClick={refreshDevBoys} style={{ position: 'absolute', top: '10px', right: '10px' }}>
-      Refresh DevBoys
-    </button>
     {devBoys.map((devBoy) => (
       <DevBoyDetails key={devBoy.uuidDevBoy} devBoy={devBoy} />
     ))}
   </div>
 );
 };
-
+  const refreshButtonStyle = {
+    position: 'absolute',
+    top: '10px',
+    right: '10px',
+    padding: '5px 10px',
+    backgroundColor: '#DE0075',
+    color: 'white',
+    border: 'none',
+    borderRadius: '4px',
+    cursor: 'pointer'
+  };
 export default DevBoyList;

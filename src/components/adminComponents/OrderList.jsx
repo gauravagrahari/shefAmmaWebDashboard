@@ -8,6 +8,7 @@ import { DevBoyContext } from '../context/DevBoyContext';
 import config from '../context/constants';
 import { OrderListContext } from '../context/OrderListContext';
 import useAuthToken from '../context/useAuthToken';
+import {buildHostAddressMap} from '../commonMethods/hostAddressMap';
 
 const apiUrl = config.URL;
 
@@ -17,7 +18,7 @@ const OrderList = () => {
     const [mealTypeFilter, setMealTypeFilter] = useState('all');
     const [isDescending, setIsDescending] = useState(true);
     const { status } = useLocation().state;
-    const { hosts } = useContext(HostContext);
+    // const { hosts } = useContext(HostContext);
     // const { devBoys } = useContext(DevBoyContext);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -26,10 +27,15 @@ const OrderList = () => {
     const [totalPrice, setTotalPrice] = useState(0);
     const { orderListState, setOrderListState } = useContext(OrderListContext);
     const token = useAuthToken(); 
+
+    
     console.log("------fsfsavavaf-->"+token);
     const devBoys = JSON.parse(localStorage.getItem('devBoys')) || [];
+    const hosts = JSON.parse(localStorage.getItem('hosts')) || [];
+    const hostAddressMap = buildHostAddressMap(hosts);
     useEffect(() => {
       
+    
         const headers = token ? { Authorization: `Bearer ${token}` } : {};
       
         const fetchOrdersByStatus = async () => {
@@ -57,6 +63,9 @@ const OrderList = () => {
 
     
     useEffect(() => {
+        const hosts = JSON.parse(localStorage.getItem('hosts')) || [];
+    const hostAddressMap = buildHostAddressMap(hosts);
+
         const updatedOrders = orders.filter(order => mealTypeFilter === 'all' || order.mealType === mealTypeFilter)
                                    .sort((a, b) => isDescending ? new Date(b.timeStamp) - new Date(a.timeStamp) 
                                                                 : new Date(a.timeStamp) - new Date(b.timeStamp));
@@ -75,8 +84,7 @@ const OrderList = () => {
 
     return (
         <div>
-            <OrdersHeader />
-            <div>
+            <div className="order-controls" style={orderControlsStyle}>
                 <button onClick={() => setIsDescending(!isDescending)}>Toggle Order</button>
                 <select onChange={(e) => setMealTypeFilter(e.target.value)}>
                     <option value="all">All</option>
@@ -87,12 +95,33 @@ const OrderList = () => {
                 <p>Total Orders: {totalOrders}</p>
                 <p>Orders without DevBoy: {ordersWithoutDevBoy}</p>
                 <p>Total Price: {totalPrice.toFixed(2)}</p>
-            </div>
+            </div >
+            <div className="order-list" style={orderListStyle}>
+            <OrdersHeader />
             {filteredOrders.map(order => (
-                <OrderItem key={`${order.uuidOrder}-${order.timeStamp}`} orderData={order} devBoys={devBoys} onDevBoyAssigned={handleDevBoyAssignment} />
+                <OrderItem key={`${order.uuidOrder}-${order.timeStamp}`} orderData={order} devBoys={devBoys} onDevBoyAssigned={handleDevBoyAssignment} hostAddress={hostAddressMap[order.uuidHost]}/>
             ))}
+                </div>
         </div>
     );
 };
+const orderListStyle = {
+    margin: '10px'
+};
 
+const orderControlsStyle = {
+    display: 'flex',
+    justifyContent: 'space-between',
+    padding: '10px',
+    backgroundColor: '#fafafa',
+    borderBottom: '2px solid #ddd'
+};
+
+const controlButtonStyle = {
+    padding: '5px 10px',
+    margin: '0 5px',
+    border: '1px solid #ccc',
+    borderRadius: '4px',
+    cursor: 'pointer'
+};
 export default OrderList;

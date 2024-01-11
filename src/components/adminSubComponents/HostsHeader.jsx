@@ -5,10 +5,8 @@ function HostsHeader() {
   return (
     <div className="hostsHeaderContainer">
       <div className="headerItem">Name</div>
+      <div className="headerItem">Status</div>
       <div className="headerItem">Phone</div>
-      <div className="headerItem">Dine Category</div>
-      <div className="headerItem">DDP</div>
-      <div className="headerItem">DP</div>
       <div className="headerItem">Description</div>
       {/* <div className="headerItem">Current Message</div> */}
       <div className="headerItem">Provided Meals</div>

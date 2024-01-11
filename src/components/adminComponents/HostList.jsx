@@ -43,7 +43,7 @@ useEffect(() => {
   } else if (hosts.length === 0) {
   fetchHosts();
   }
-}, [hosts, updateHosts]); 
+}, []); 
 
 const handleHostUpdated = (updatedHost) => {
   const newHosts = hosts.map(host => 

@@ -8,13 +8,11 @@ const apiUrl = config.URL;
 const MealDetail = ({ meal }) => {
     const [editableMeal, setEditableMeal] = useState(meal);
     const [attributeToEdit, setAttributeToEdit] = useState('');
-// <<<<<<< Updated upstream
     const [isUpdating, setIsUpdating] = useState(false);
 
 
     const token = useAuthToken(); 
     const headers = token ? { Authorization: `Bearer ${token}` } : {};
-// >>>>>>> Stashed changes
     const handleChange = (e) => {
         if (!isUpdating) {
             setEditableMeal({ ...editableMeal, [e.target.name]: e.target.value });
