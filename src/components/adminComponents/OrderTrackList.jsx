@@ -27,16 +27,39 @@ const OrderTrackList = () => {
     };
 
     return (
-        <div>
-            <h2>Order Track Dashboard</h2>
+        <div style={styles.container}>
+            <h2 style={styles.header}>Order Track Dashboard</h2>
             <div>
-                <button onClick={() => fetchOrderTracks('l')}>Lunch</button>
-                <button onClick={() => fetchOrderTracks('d')}>Dinner</button>
-                <button onClick={() => fetchOrderTracks('b')}>Breakfast</button>
+                <button style={styles.button} onClick={() => fetchOrderTracks('l')}>Lunch</button>
+                <button style={styles.button} onClick={() => fetchOrderTracks('d')}>Dinner</button>
+                <button style={styles.button} onClick={() => fetchOrderTracks('b')}>Breakfast</button>
             </div>
-            {isLoading ? <p>Loading...</p> : <OrderTrackDisplay orderTracks={orderTracks} hosts={hosts} />}
+            {isLoading ? <p style={styles.loadingText}>Loading...</p> : <OrderTrackDisplay orderTracks={orderTracks} hosts={hosts} />}
         </div>
     );
 };
-
+const styles = {
+    container: {
+        padding: '20px',
+        backgroundColor: '#f3f3f3',
+        borderRadius: '8px',
+        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
+    },
+    header: {
+        color: '#333',
+        marginBottom: '15px'
+    },
+    button: {
+        marginRight: '10px',
+        padding: '10px 15px',
+        backgroundColor: '#007bff',
+        color: 'white',
+        border: 'none',
+        borderRadius: '4px',
+        cursor: 'pointer'
+    },
+    loadingText: {
+        color: '#666'
+    }
+};
 export default OrderTrackList;

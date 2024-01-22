@@ -53,10 +53,28 @@ const handleHostUpdated = (updatedHost) => {
   localStorage.setItem('hosts', JSON.stringify(newHosts));
 };
 
+const styles = {
+  container: {
+      position: 'relative',
+      padding: '20px'
+  },
+  refreshButton: {
+      position: 'absolute',
+      top: '10px',
+      right: '10px',
+      padding: '10px 20px',
+      backgroundColor: '#007bff',
+      color: 'white',
+      border: 'none',
+      borderRadius: '5px',
+      cursor: 'pointer'
+  }
+};
+
 return (
-  <div>
+  <div style={styles.container}>
       <HostsHeader />
-      <button onClick={refreshHosts} style={{ position: 'absolute', top: '10px', right: '10px' }}>
+      <button onClick={refreshHosts} style={styles.refreshButton}>
           Refresh Hosts
       </button>
       {hosts && Array.isArray(hosts) && hosts.map((host) => (
@@ -64,5 +82,6 @@ return (
       ))}
   </div>
 );
-}
+};
+
 export default HostList;
