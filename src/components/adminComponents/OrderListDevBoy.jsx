@@ -4,6 +4,7 @@ import OrdersHeader from '../adminSubComponents/OrdersHeader';
 import OrderItem from '../adminSubComponents/OrderItem';
 import { DevBoyContext } from '../context/DevBoyContext';
 import '../../index.css';
+import {buildHostAddressMap} from '../commonMethods/hostAddressMap';
 
 const OrderListDevBoy = () => {
   const location = useLocation();
@@ -14,7 +15,9 @@ const OrderListDevBoy = () => {
   const [filteredOrders, setFilteredOrders] = useState(initialOrders);
   const [mealTypeFilter, setMealTypeFilter] = useState('all');
   const [isDescending, setIsDescending] = useState(true);
-
+  
+  const hosts = JSON.parse(localStorage.getItem('hosts')) || [];
+  const hostAddressMap = buildHostAddressMap(hosts);
   useEffect(() => {
     const updatedOrders = orders
       .filter(order => mealTypeFilter === 'all' || order.mealType === mealTypeFilter)
@@ -45,7 +48,7 @@ const OrderListDevBoy = () => {
       {/* Orders Container */}
       <div className="ordersContainer">
         {filteredOrders.map(order => (
-          <OrderItem key={`${order.uuidOrder}-${order.timeStamp}`} orderData={order} devBoys={devBoys} />
+          <OrderItem key={`${order.uuidOrder}-${order.timeStamp}`} orderData={order} devBoys={devBoys} hostAddress={hostAddressMap[order.uuidHost]}/>
         ))}
       </div>
     </div>

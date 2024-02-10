@@ -20,8 +20,11 @@ function ConstantChargesComponent() {
     dinnerEndTime: '',
     breakfastBookTime: '',
     lunchBookTime: '',
-    dinnerBookTime: ''
+    dinnerBookTime: '',
+    extraHandlingCharges: '', // New field
+    maxMeal: '',
   });
+  const [initialCharges, setInitialCharges] = useState({});
 
   useEffect(() => {
     const fetchCharges = async () => {
@@ -30,14 +33,14 @@ function ConstantChargesComponent() {
       try {
         const response = await axios.get(`${apiUrl}/admin/getCharges`, { headers });
         setCharges(response.data);
+        setInitialCharges(response.data);
       } catch (error) {
         console.error('Error fetching charges:', error);
         alert('Error fetching data');
       }
     };
-
     fetchCharges();
-  }, [token]);  // Dependency array includes token
+  }, [token]);
 
   const handleChange = (e) => {
     setCharges({ ...charges, [e.target.name]: e.target.value });
@@ -45,6 +48,11 @@ function ConstantChargesComponent() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (JSON.stringify(charges) === JSON.stringify(initialCharges)) {
+      alert('No change detected');
+      return;
+    }
+
     try {
       const response = await axios.put(`${apiUrl}/admin/updateCharges`, charges, {
         headers: token ? { Authorization: `Bearer ${token}` } : {}
@@ -56,25 +64,107 @@ function ConstantChargesComponent() {
     }
   };
 
+  const groupFields = (fields) => {
+    const excludedFields = ['constantCharges', 'sk'];
+    const categories = {
+      charges: [],
+      breakfast: [],
+      lunch: [],
+      dinner: []
+    };
+
+    fields.forEach(([key, value]) => {
+      if (!excludedFields.includes(key)) {
+        const category = Object.keys(categories).find(c => key.toLowerCase().includes(c)) || 'charges';
+        categories[category].push([key, value]);
+      }
+    });
+
+    return categories;
+  };
+
+  const groupedCharges = groupFields(Object.entries(charges));
+
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        {Object.entries(charges).map(([key, value]) => (
-          <div key={key}>
-            <label htmlFor={key}>{key.replace(/([A-Z])/g, ' $1').trim()}</label>
-            <input
-              type="text"
-              id={key}
-              name={key}
-              value={value}
-              onChange={handleChange}
-            />
+    <>
+      <form onSubmit={handleSubmit} style={formStyle}>
+        {Object.entries(groupedCharges).map(([category, fields]) => (
+          <div key={category} style={columnStyle}>
+            <h3>{category.charAt(0).toUpperCase() + category.slice(1)}</h3>
+            {fields.map(([key, value]) => (
+              <div key={key}>
+                <label htmlFor={key} style={labelStyle}>
+                  {key.replace(/([A-Z])/g, ' $1').trim()}
+                  {key === 'cancelCutOffTime' ? ' (seconds)' : ''}
+                </label>
+                <input
+                  type="text"
+                  id={key}
+                  name={key}
+                  value={value}
+                  onChange={handleChange}
+                  style={inputStyle}
+                />
+              </div>
+            ))}
           </div>
         ))}
-        <button type="submit">Update Charges</button>
       </form>
-    </div>
+      <div style={buttonContainerStyle}>
+          <button type="submit" onClick={handleSubmit} style={buttonStyle}>Update Charges</button>
+        </div>  
+    </>
   );
 }
+const formStyle = {
+  display: 'flex',
+  justifyContent: 'space-between',
+  padding: '20px',
+  backgroundColor: '#f7f7f7',
+  borderRadius: '10px',
+  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+  maxWidth: '1200px',
+  margin: 'auto'
+};
+
+const columnStyle = {
+  display: 'flex',
+  flexDirection: 'column',
+  flex: 1,
+  margin: '0 15px' // Increased margin for spacing between columns
+};
+
+const inputStyle = {
+  padding: '10px',
+  margin: '10px 0',
+  border: '1px solid #ccc',
+  borderRadius: '4px',
+  width: '100%'
+};
+
+const labelStyle = {
+  fontWeight: 'bold',
+  color: '#333',
+  display: 'block',
+  margin: '10px 0 5px'
+};
+const buttonContainerStyle = {
+  display: 'flex',
+  justifyContent: 'center',
+  marginTop: '20px'
+};
+const buttonStyle = {
+  padding: '10px 15px',
+  border: 'none',
+  borderRadius: '5px',
+  backgroundColor: '#4CAF50',
+  color: 'white',
+  cursor: 'pointer',
+  marginTop: '20px',
+  width: '150px',  
+  height: '70px',  
+  alignSelf: 'center'
+};
+
 
 export default ConstantChargesComponent;

@@ -2,9 +2,7 @@
 // import { URL } from '@env';
 
 const config = {
-  URL: 'http://192.168.117.128:9090', // Provide a default value if URL is not defined
-  // URL: URL || 'http://192.168.54.128:9090', // Provide a default value if URL is not defined
-  // ... other config settings ...
+  URL: 'http://uat-env.eba-epp52dpv.ap-south-1.elasticbeanstalk.com', // Provide a default value if URL is not defined
 };
 // console.log("  url  "+URL);
 

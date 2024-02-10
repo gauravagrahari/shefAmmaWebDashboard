@@ -95,60 +95,55 @@ const DevBoyDetails = ({ devBoy }) => {
         }
     };
     return (
-        <div className="devBoyItemContainer">
-         <input
-                type="text"
-                name="name"
-                placeholder="Name"
-                value={editableDevBoy.name}
-                onChange={handleChange}
-                className="inputField"
-            />
-            <input
-                type="text"
-                name="geocode"
-                placeholder="Geocode"
-                value={editableDevBoy.geocode}
-                onChange={handleChange}
-                className="inputField"
-            />
-            <input
-                type="text"
-                name="DP"
-                placeholder="DP"
-                value={editableDevBoy.DP}
-                onChange={handleChange}
-                className="inputField"
-            />
-            <input
-                type="text"
-                name="vehicleType"
-                placeholder="Vehicle Type"
-                value={editableDevBoy.vehicleType}
-                onChange={handleChange}
-                className="inputField"
-            />
-<select
-    name="status"
-    value={editableDevBoy.status === 'true' ? 'true' : 'false'}
-    onChange={handleChange}
-    className="dropdownField"
-    disabled={editingField && editingField !== 'status'}
->
-    <option value="true">Active</option>
-    <option value="false">Inactive</option>
-</select>
-
-
-        <button onClick={handleUpdate} className="updateButton">
+        <div style={devBoyItemContainerStyle}>
+          <input
+            type="text"
+            name="name"
+            placeholder="Name"
+            value={editableDevBoy.name}
+            onChange={handleChange}
+            style={inputFieldStyle} // Corrected
+          />
+    
+          <input
+            type="text"
+            name="DP"
+            placeholder="DP"
+            value={editableDevBoy.DP}
+            onChange={handleChange}
+            style={inputFieldStyle} // Corrected
+          />
+    
+          <input
+            type="text"
+            name="vehicleType"
+            placeholder="Vehicle Type"
+            value={editableDevBoy.vehicleType}
+            onChange={handleChange}
+            style={inputFieldStyle}
+          />
+    
+          <select
+            name="status"
+            value={editableDevBoy.status === 'true' ? 'true' : 'false'}
+            onChange={handleChange}
+            style={dropdownFieldStyle} 
+            disabled={editingField && editingField !== 'status'}
+          >    <option value="true">Active</option>
+          <option value="false">Inactive</option>
+          </select>
+    
+          <button onClick={handleUpdate} style={buttonStyle}>
             Update Details
-        </button>
-        <button onClick={handleViewOrders} className="viewOrdersButton">
+          </button>
+    
+          <button onClick={handleViewOrders} style={buttonStyle}>
             View Orders
-        </button>
-        <div className="orderStatusDropdownContainer">
-            <select value={selectedStatus} onChange={handleStatusChange} className="dropdownField">
-                <option value="new">New</option>
+          </button>
+    
+          <div style={orderStatusDropdownContainerStyle}> 
+            <select value={selectedStatus} onChange={handleStatusChange} style={dropdownFieldStyle}> 
+            <option value="new">New</option>
                 <option value="ip">In Progress</option>
                 <option value="pkd">Picked</option>
                 <option value="com">Completed</option>
@@ -156,22 +151,45 @@ const DevBoyDetails = ({ devBoy }) => {
                 <option value="unpkd">Unpicked</option>
                 <option value="undel">Undelivered</option>
             </select>
-            <button onClick={handleViewOrdersByStatus} className="viewOrdersButton">
-                Get Orders
+    
+            <button onClick={handleViewOrdersByStatus} style={buttonStyle}> 
+              Get Orders
             </button>
+          </div>
         </div>
-    </div>
-        // <div className="devboy-details">
-        //     <div>{devBoy.uuidDevBoy}</div>
-        //     <div>{devBoy.name}</div>
-        //     <div>{devBoy.geocode}</div>
-        //     <div>{devBoy.DP}</div>
-        //     <div>{devBoy.locationDevBoy?.address}</div>
-        //     <div>{devBoy.status}</div>
-        //     <div>{devBoy.vehicleType}</div>
-        //     <button onClick={updateDevBoyDetails}>Update</button>
-        // </div>
-    );
-};
-
+      );
+    };
+    const devBoyItemContainerStyle = {
+      display: 'grid',
+      gridTemplateColumns: '1fr 1fr 1fr 1fr',
+      gap: '10px',
+      padding: '10px',
+      borderBottom: '1px solid #eee'
+    };
+  
+    const inputFieldStyle = {
+      padding: '5px',
+      border: '1px solid #ccc',
+      borderRadius: '4px'
+    };
+  
+    const buttonStyle = {
+      padding: '5px 10px',
+      border: 'none',
+      borderRadius: '4px',
+      cursor: 'pointer',
+      backgroundColor: '#4CAF50',
+      color: 'white'
+    };
+  
+    const orderStatusDropdownContainerStyle = {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center'
+    };
+  
+    const dropdownFieldStyle = {
+      ...inputFieldStyle,
+      marginRight: '5px'
+    };
 export default DevBoyDetails;

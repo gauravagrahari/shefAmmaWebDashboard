@@ -17,6 +17,7 @@ import HostsItem from './components/adminSubComponents/HostsItem';
 import MealDetail from './components/adminSubComponents/MealDetail';
 import OrderItem from './components/adminSubComponents/OrderItem';
 import PincodeComponent from './components/adminComponents/PincodeComponent';
+import OrderTrackList from './components/adminComponents/OrderTrackList';
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   // const navigate = useNavigate();
@@ -34,6 +35,7 @@ function App() {
           <Routes>
           <Route exact path="/" element={isLoggedIn ? <HomeDashboard /> : <AdminLogin />} />
             <Route path="/hosts-list" element={<HostList />} />
+            <Route path="/order-track" element={<OrderTrackList />} />
             <Route path="/devBoy-list" element={<DevBoyList />} />
             <Route path="/order-list-host" element={<OrderListHost />} />
             <Route path="/order-list" element={<OrderList />} />

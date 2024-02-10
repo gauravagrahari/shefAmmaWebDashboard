@@ -3,16 +3,22 @@ import '../../index.css';
 
 const DevBoyHeader = () => {
     return (
-        <div className="devboy-header">
-            {/* <div>ID</div> */}
+        <div className="devboy-header" style={devboyStyle}>
             <div>Name</div>
-            {/* <div>Geocode</div> */}
-            <div>Display Picture</div>
-            <div>Address</div>
-            <div>Status</div>
+            <div>Photo</div>
             <div>Vehicle Type</div>
+            <div>Status</div>
         </div>
     );
+};
+const devboyStyle = {
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr 1fr 1fr',
+    textAlign: 'center',
+    padding: '10px',
+    backgroundColor: '#f5f5f5',
+    borderBottom: '2px solid #ccc',
+    fontWeight: 'bold',
 };
 
 export default DevBoyHeader;
