@@ -6,18 +6,18 @@ const OrdersHeader = () => {
         <div className="orders-header" style={ordersHeaderStyle}>
             <div>Timestamp</div>
             <div>Status</div>
-            <div>Amount</div>
+            <div>Final Amt.</div>
             <div>Servings</div>
-            <div>Guest Name</div>
-            <div>Host Name</div>
-            <div>Guest Phone</div>
-            <div>Host Phone</div>
+            <div>Cust Name</div>
+            <div>Cook Name</div>
+            <div>Cust Phone</div>
+            <div>Cook Phone</div>
             <div>Meal Type</div>
             <div>Item Name</div>
-            <div>Item Price</div>
+            <div>Cook's Price</div>
             <div>Delivery Time</div>
             <div>Delivery Address</div>
-            <div>Host Address</div>
+            <div>Cook Address</div>
         </div>
     );
 };

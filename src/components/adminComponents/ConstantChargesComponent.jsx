@@ -95,7 +95,7 @@ function ConstantChargesComponent() {
               <div key={key}>
                 <label htmlFor={key} style={labelStyle}>
                   {key.replace(/([A-Z])/g, ' $1').trim()}
-                  {key === 'cancelCutOffTime' ? ' (seconds)' : ''}
+                  {key === 'cancelCutOffTime' ? ' (minutes)' : ''}
                 </label>
                 <input
                   type="text"

@@ -213,8 +213,8 @@ return (
         <option value="unpkd">Unpicked</option>
         <option value="undel">Undelivered</option>
       </select>
+      <button onClick={handleViewOrdersByStatus} style={viewOrdersButtonStyle}>View Orders</button>
       <button onClick={handleUpdate} style={updateButtonStyle}>Update Details</button>
-      <button onClick={handleViewOrders} style={viewOrdersButtonStyle}>View Orders</button>
       <button onClick={handleViewMeals} style={viewMealsButtonStyle}>Get Meals</button>
     </div>
   </div>
