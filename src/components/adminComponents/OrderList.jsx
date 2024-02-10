@@ -3,8 +3,6 @@ import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import OrdersHeader from '../adminSubComponents/OrdersHeader';
 import OrderItem from '../adminSubComponents/OrderItem';
-import { HostContext } from '../context/HostContext';
-import { DevBoyContext } from '../context/DevBoyContext';
 import config from '../context/constants';
 import { OrderListContext } from '../context/OrderListContext';
 import useAuthToken from '../context/useAuthToken';
@@ -18,14 +16,11 @@ const OrderList = () => {
     const [mealTypeFilter, setMealTypeFilter] = useState('all');
     const [isDescending, setIsDescending] = useState(true);
     const { status } = useLocation().state;
-    // const { hosts } = useContext(HostContext);
-    // const { devBoys } = useContext(DevBoyContext);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [totalOrders, setTotalOrders] = useState(0);
     const [ordersWithoutDevBoy, setOrdersWithoutDevBoy] = useState(0);
     const [totalPrice, setTotalPrice] = useState(0);
-    const { orderListState, setOrderListState } = useContext(OrderListContext);
     const token = useAuthToken(); 
 
     
@@ -64,8 +59,6 @@ const OrderList = () => {
     
     useEffect(() => {
         const hosts = JSON.parse(localStorage.getItem('hosts')) || [];
-    const hostAddressMap = buildHostAddressMap(hosts);
-
         const updatedOrders = orders.filter(order => mealTypeFilter === 'all' || order.mealType === mealTypeFilter)
                                    .sort((a, b) => isDescending ? new Date(b.timeStamp) - new Date(a.timeStamp) 
                                                                 : new Date(a.timeStamp) - new Date(b.timeStamp));
@@ -117,11 +110,4 @@ const orderControlsStyle = {
     borderBottom: '2px solid #ddd'
 };
 
-const controlButtonStyle = {
-    padding: '5px 10px',
-    margin: '0 5px',
-    border: '1px solid #ccc',
-    borderRadius: '4px',
-    cursor: 'pointer'
-};
 export default OrderList;
