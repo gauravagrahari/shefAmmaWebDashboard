@@ -4,7 +4,6 @@ import axios from 'axios';
 import config from '../context/constants';
 import useAuthToken from '../context/useAuthToken';
 
-// const apiUrl = process.env.REACT_APP_API_URL;
 const apiUrl =  config.URL;
 const OrderItem = ({ orderData, devBoys, onDevBoyAssigned, hostAddress }) => {
     const [selectedDevBoy, setSelectedDevBoy] = useState(orderData.uuidDevBoy || '');

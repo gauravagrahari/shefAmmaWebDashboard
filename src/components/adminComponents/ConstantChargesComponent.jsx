@@ -20,9 +20,11 @@ function ConstantChargesComponent() {
     dinnerEndTime: '',
     breakfastBookTime: '',
     lunchBookTime: '',
-    dinnerBookTime: ''
+    dinnerBookTime: '',
+    extraHandlingCharges: '', // New field
+    maxMeal: '',
   });
-  const [initialCharges, setInitialCharges] = useState({}); 
+  const [initialCharges, setInitialCharges] = useState({});
 
   useEffect(() => {
     const fetchCharges = async () => {
@@ -32,14 +34,13 @@ function ConstantChargesComponent() {
         const response = await axios.get(`${apiUrl}/admin/getCharges`, { headers });
         setCharges(response.data);
         setInitialCharges(response.data);
-
       } catch (error) {
         console.error('Error fetching charges:', error);
         alert('Error fetching data');
       }
     };
     fetchCharges();
-  }, [token]);  // Dependency array includes token
+  }, [token]);
 
   const handleChange = (e) => {
     setCharges({ ...charges, [e.target.name]: e.target.value });
@@ -62,7 +63,7 @@ function ConstantChargesComponent() {
       alert('Error updating charges');
     }
   };
- 
+
   const groupFields = (fields) => {
     const excludedFields = ['constantCharges', 'sk'];
     const categories = {
@@ -86,34 +87,33 @@ function ConstantChargesComponent() {
 
   return (
     <>
-    <form onSubmit={handleSubmit} style={formStyle}>
-      {Object.entries(groupedCharges).map(([category, fields]) => (
-        <div key={category} style={columnStyle}>
-          <h3>{category.charAt(0).toUpperCase() + category.slice(1)}</h3>
-          {fields.map(([key, value]) => (
-            <div key={key}>
-              <label htmlFor={key} style={labelStyle}>
-                {key.replace(/([A-Z])/g, ' $1').trim()}
-                {key === 'cancelCutOffTime' ? ' (seconds)' : ''}
-              </label>
-              <input
-                type="text"
-                id={key}
-                name={key}
-                value={value}
-                onChange={handleChange}
-                style={inputStyle}
-              />
-            </div>
-          ))}
-        </div>
-      ))}
-      
-    </form>
-    <div style={buttonContainerStyle}>
-        <button type="submit" onClick={handleSubmit} style={buttonStyle}>Update Charges</button>
-      </div>  
-        </>
+      <form onSubmit={handleSubmit} style={formStyle}>
+        {Object.entries(groupedCharges).map(([category, fields]) => (
+          <div key={category} style={columnStyle}>
+            <h3>{category.charAt(0).toUpperCase() + category.slice(1)}</h3>
+            {fields.map(([key, value]) => (
+              <div key={key}>
+                <label htmlFor={key} style={labelStyle}>
+                  {key.replace(/([A-Z])/g, ' $1').trim()}
+                  {key === 'cancelCutOffTime' ? ' (seconds)' : ''}
+                </label>
+                <input
+                  type="text"
+                  id={key}
+                  name={key}
+                  value={value}
+                  onChange={handleChange}
+                  style={inputStyle}
+                />
+              </div>
+            ))}
+          </div>
+        ))}
+      </form>
+      <div style={buttonContainerStyle}>
+          <button type="submit" onClick={handleSubmit} style={buttonStyle}>Update Charges</button>
+        </div>  
+    </>
   );
 }
 const formStyle = {
