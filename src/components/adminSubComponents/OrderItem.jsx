@@ -24,12 +24,15 @@ const OrderItem = ({ orderData, devBoys, onDevBoyAssigned, hostAddress }) => {
     };
     const isOrderNew = orderData.status === 'new';
     const activeDevBoys = isOrderNew ? devBoys.filter(devBoy => devBoy.status === 'true') : devBoys;
-//     console.log("All DevBoys:", devBoys);
-// console.log("Active DevBoys:", activeDevBoys);
- 
     const formatTime = (timestamp) => {
-        return new Date(timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        return new Date(timestamp).toLocaleString([], {
+            year: '2-digit',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+        });
     };
+    
     const updateOrder = async () => {
         if (!lastEditedAttribute) {
             alert('No changes detected.');
