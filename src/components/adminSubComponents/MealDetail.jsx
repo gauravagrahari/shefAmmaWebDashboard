@@ -4,7 +4,7 @@ import config from '../context/constants';
 import useAuthToken from '../context/useAuthToken';
 
 const apiUrl = config.URL;
-
+//only one value is updated at a time
 const MealDetail = ({ meal }) => {
     const [editableMeal, setEditableMeal] = useState(meal);
     const [attributeToEdit, setAttributeToEdit] = useState('');

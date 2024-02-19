@@ -23,6 +23,7 @@ function ConstantChargesComponent() {
     dinnerBookTime: '',
     extraHandlingCharges: '', // New field
     maxMeal: '',
+    cutleryCharge: '', 
   });
   const [initialCharges, setInitialCharges] = useState({});
 
@@ -72,14 +73,14 @@ function ConstantChargesComponent() {
       lunch: [],
       dinner: []
     };
-
+  
     fields.forEach(([key, value]) => {
       if (!excludedFields.includes(key)) {
-        const category = Object.keys(categories).find(c => key.toLowerCase().includes(c)) || 'charges';
+        let category = Object.keys(categories).find(c => key.toLowerCase().includes(c)) || 'charges';
         categories[category].push([key, value]);
       }
     });
-
+  
     return categories;
   };
 
