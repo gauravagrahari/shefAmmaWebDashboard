@@ -18,12 +18,16 @@ const OrdersHeader = () => {
             <div>Delivery Time</div>
             <div>Delivery Address</div>
             <div>Cook Address</div>
+            <div>Preferred Time</div>
+            <div>Cutlery count</div>
+            <div>Rating</div>
+            <div>Review</div>
         </div>
     );
 };
 const ordersHeaderStyle = {
     display: 'grid',
-    gridTemplateColumns: 'repeat(15, minmax(120px, 1fr))', // Adjust the number of columns to match OrderItem
+    gridTemplateColumns: 'repeat(18, minmax(120px, 1fr))', // Adjust the number of columns to match OrderItem
     gap: '10px',
     backgroundColor: '#fff',
     padding: '10px',

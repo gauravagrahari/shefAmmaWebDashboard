@@ -10,7 +10,7 @@ function PincodeComponent() {
     const [message, setMessage] = useState('');
     const [pincodes, setPincodes] = useState([]);
 
-    const token = useAuthToken(); // Retrieve the token
+    const token = useAuthToken();
     const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
     const addPincode = async () => {
