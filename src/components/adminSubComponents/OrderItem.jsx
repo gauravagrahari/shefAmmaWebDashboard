@@ -120,13 +120,18 @@ const OrderItem = ({ orderData, devBoys, onDevBoyAssigned, hostAddress }) => {
       ) : (
         <div>No host address provided</div>
       )}
+
     </div>
-        </div>
+    <div>{orderData.preferredTime}</div>
+    <div>{orderData.cutleryCount}</div>
+    <div>{orderData.rating}</div>
+    <div>{orderData.review}</div>
+    </div>
     );
 };
 const orderItemStyle = {
     display: 'grid',
-    gridTemplateColumns: 'repeat(15, minmax(120px, 1fr))', // Same as OrdersHeader
+    gridTemplateColumns: 'repeat(18, minmax(120px, 1fr))', 
     gap: '10px',
     padding: '10px',
     borderBottom: '1px solid #eee'

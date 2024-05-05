@@ -65,7 +65,7 @@ const OrderList = () => {
         setFilteredOrders(updatedOrders);
         setTotalOrders(updatedOrders.length);
         setOrdersWithoutDevBoy(updatedOrders.filter(order => !order.uuidDevBoy).length);
-        setTotalPrice(updatedOrders.reduce((sum, order) => sum + (parseFloat(order.itemPrice) || 0), 0));
+        setTotalPrice(updatedOrders.reduce((sum, order) => sum + (parseFloat(order.amount) || 0), 0));
     }, [orders, mealTypeFilter, isDescending]);
 
     const handleDevBoyAssignment = () => {
