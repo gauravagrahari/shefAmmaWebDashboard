@@ -1,0 +1,5 @@
+[[redirects]]
+  from = "/api/*"
+  to = "http://Prod-env.eba-tabt2pxm.ap-south-1.elasticbeanstalk.com/:splat"
+  status = 200
+  force = true
